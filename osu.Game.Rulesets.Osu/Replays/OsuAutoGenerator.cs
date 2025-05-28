@@ -173,7 +173,7 @@ namespace osu.Game.Rulesets.Osu.Replays
             }
 
             // Add frames to click the hitobject
-            addHitObjectClickFrames(h, startPosition, spinnerDirection);
+            addHitObjectClickFrames(h, startPosition, spinnerDirection, easing);
         }
 
         #endregion
@@ -252,15 +252,15 @@ namespace osu.Game.Rulesets.Osu.Replays
                 {
                     // [lastLastFrame] ... [lastFrame] ... [current frame]
                     // We want to find the cursor position at lastFrame, so interpolate between lastLastFrame and the new target position.
-                    lastFrame.Position = Interpolation.ValueAt(lastFrame.Time, lastFrame.Position, targetPos, lastLastFrame.Time, h.StartTime, easing);
+                    lastFrame.Position = Interpolation.ValueAt(lastFrame.Time, lastFrame.Position, targetPos + new Vector2(0,-50), lastLastFrame.Time - 100, h.StartTime, easing);
                 }
 
                 Vector2 lastPosition = lastFrame.Position;
 
                 // Perform the rest of the eased movement until the target position is reached.
-                for (double time = lastFrame.Time + GetFrameDelay(lastFrame.Time); time < h.StartTime; time += GetFrameDelay(time))
+                for (double time = lastFrame.Time + GetFrameDelay(lastFrame.Time); time < h.StartTime - 100; time += GetFrameDelay(time))
                 {
-                    Vector2 currentPosition = Interpolation.ValueAt(time, lastPosition, targetPos, lastFrame.Time, h.StartTime, easing);
+                    Vector2 currentPosition = Interpolation.ValueAt(time, lastPosition, targetPos + new Vector2(0,-50), lastFrame.Time - 100, h.StartTime - 100, easing);
                     AddFrameToReplay(new OsuReplayFrame((int)time, new Vector2(currentPosition.X, currentPosition.Y)) { Actions = lastFrame.Actions });
                 }
             }
@@ -280,8 +280,9 @@ namespace osu.Game.Rulesets.Osu.Replays
         /// </remarks>
         private double getReactionTime(double timeInstant) => ApplyModsToRate(timeInstant, 100);
 
+        private OsuReplayFrame startFrame;
         // Add frames to click the hitobject
-        private void addHitObjectClickFrames(OsuHitObject h, Vector2 startPosition, float spinnerDirection)
+        private void addHitObjectClickFrames(OsuHitObject h, Vector2 startPosition, float spinnerDirection, Easing easing)
         {
             // Time to insert the first frame which clicks the object
             // Here we mainly need to determine which button to use
