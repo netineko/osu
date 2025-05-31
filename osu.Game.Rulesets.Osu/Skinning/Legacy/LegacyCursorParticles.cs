@@ -42,7 +42,7 @@ namespace osu.Game.Rulesets.Osu.Skinning.Legacy
         [BackgroundDependencyLoader]
         private void load(ISkinSource skin)
         {
-            var texture = skin.GetTexture("star2");
+            var texture = skin.GetTexture("star2aaaaaaaaaaaa"); // N-TODO: remove this element in a reasonable way
             var starBreakAdditive = skin.GetConfig<OsuSkinColour, Color4>(OsuSkinColour.StarBreakAdditive)?.Value ?? new Color4(255, 182, 193, 255);
 
             if (texture != null)

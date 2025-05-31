@@ -206,7 +206,8 @@ namespace osu.Game.Rulesets.Osu.Skinning.Legacy
                             if (!this.HasFont(LegacyFont.HitCircle))
                                 return null;
 
-                            const float hitcircle_text_scale = 0.8f;
+                            //const float hitcircle_text_scale = 0.8f;
+                            const float hitcircle_text_scale = 1f; // N-TODO: make this toggleable through skin.ini
                             return new LegacySpriteText(LegacyFont.HitCircle)
                             {
                                 // stable applies a blanket 0.8x scale to hitcircle fonts

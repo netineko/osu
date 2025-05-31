@@ -27,7 +27,7 @@ namespace osu.Game.Rulesets.Osu.Skinning.Legacy
 
         private bool spinnerBlink;
 
-        private const float final_metre_height = 692 * SPRITE_SCALE;
+        private const float final_metre_height = 640 * SPRITE_SCALE;
 
         [BackgroundDependencyLoader]
         private void load(ISkinSource source)
@@ -38,44 +38,46 @@ namespace osu.Game.Rulesets.Osu.Skinning.Legacy
             {
                 new Sprite
                 {
-                    Anchor = Anchor.TopCentre,
-                    Origin = Anchor.Centre,
+                    Anchor = Anchor.BottomCentre,
+                    Origin = Anchor.BottomCentre,
                     Texture = source.GetTexture("spinner-background"),
-                    Colour = source.GetConfig<OsuSkinColour, Color4>(OsuSkinColour.SpinnerBackground)?.Value ?? new Color4(100, 100, 100, 255),
+                    //Colour = source.GetConfig<OsuSkinColour, Color4>(OsuSkinColour.SpinnerBackground)?.Value ?? new Color4(100, 100, 100, 255),
                     Scale = new Vector2(SPRITE_SCALE),
                     Y = SPINNER_Y_CENTRE,
                 },
                 disc = new Sprite
                 {
-                    Anchor = Anchor.TopCentre,
+                    Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     Texture = source.GetTexture("spinner-circle"),
                     Scale = new Vector2(SPRITE_SCALE),
-                    Y = SPINNER_Y_CENTRE,
+                    Y = SPINNER_Y_CENTRE + 44,
                 },
                 metre = new Container
                 {
-                    AutoSizeAxes = Axes.Both,
+                    //RelativeSizeAxes = Axes.Y,
+                    Height = final_metre_height,
+                    AutoSizeAxes = Axes.X,
                     // this anchor makes no sense, but that's what stable uses.
-                    Anchor = Anchor.TopLeft,
-                    Origin = Anchor.TopLeft,
-                    Margin = new MarginPadding { Top = SPINNER_TOP_OFFSET },
+                    Anchor = Anchor.BottomCentre,
+                    Origin = Anchor.BottomCentre,
+                    //Margin = new MarginPadding { Top = SPINNER_TOP_OFFSET },
                     Masking = true,
                     Child = metreSprite = new Sprite
                     {
                         Texture = source.GetTexture("spinner-metre"),
-                        Anchor = Anchor.TopLeft,
-                        Origin = Anchor.TopLeft,
+                        Anchor = Anchor.BottomCentre,
+                        Origin = Anchor.BottomCentre,
                         Scale = new Vector2(SPRITE_SCALE)
                     }
                 },
                 ApproachCircle = new Sprite
                 {
-                    Anchor = Anchor.TopCentre,
+                    Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     Texture = source.GetTexture("spinner-approachcircle"),
                     Scale = new Vector2(SPRITE_SCALE * 1.86f),
-                    Y = SPINNER_Y_CENTRE,
+                    Y = SPINNER_Y_CENTRE + 44,
                 }
             });
         }
@@ -112,20 +114,20 @@ namespace osu.Game.Rulesets.Osu.Skinning.Legacy
             metreSprite.Y = -metre.Y;
         }
 
-        private const int total_bars = 10;
+        private const int total_bars = 11;
 
         private float getMetreHeight(float progress)
         {
             progress *= 100;
 
             // the spinner should still blink at 100% progress.
-            if (spinnerBlink)
-                progress = Math.Min(99, progress);
+            // if (spinnerBlink)
+            //     progress = Math.Min(99, progress);
 
-            int barCount = (int)progress / 10;
+            int barCount = (int)progress / 9;
 
-            if (spinnerBlink && RNG.NextBool(((int)progress % 10) / 10f))
-                barCount++;
+            // if (spinnerBlink && RNG.NextBool(((int)progress % 9) / 9f))
+            //     barCount++;
 
             return (float)barCount / total_bars * final_metre_height;
         }

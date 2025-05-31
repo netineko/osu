@@ -8,18 +8,21 @@ namespace osu.Game.Rulesets.Osu.UI.Cursor
 {
     public abstract partial class SkinnableCursor : CompositeDrawable
     {
-        private const float pressed_scale = 1.2f;
-        private const float released_scale = 1f;
+        private const float pressed_scale = 1f;
+        private const float released_scale = 1.3f;
 
         public virtual void Expand()
         {
             ExpandTarget?.ScaleTo(released_scale)
+                        .ScaleTo(pressed_scale, 400, Easing.OutElasticHalf);
+            ExpandTarget2?.ScaleTo(released_scale)
                         .ScaleTo(pressed_scale, 400, Easing.OutElasticHalf);
         }
 
         public virtual void Contract()
         {
             ExpandTarget?.ScaleTo(released_scale, 400, Easing.OutQuad);
+            ExpandTarget2?.ScaleTo(released_scale, 400, Easing.OutQuad);
         }
 
         /// <summary>
@@ -27,5 +30,6 @@ namespace osu.Game.Rulesets.Osu.UI.Cursor
         /// If null, the whole cursor will be affected by expansion.
         /// </summary>
         public Drawable? ExpandTarget { get; protected set; }
+        public Drawable? ExpandTarget2 { get; protected set; }
     }
 }

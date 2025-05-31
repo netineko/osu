@@ -25,9 +25,9 @@ namespace osu.Game.Rulesets.Osu.Skinning.Legacy
         /// This offset is negated to bring all constants into window-space.
         /// Note: SPINNER_Y_CENTRE + SPINNER_TOP_OFFSET - Position.Y = 240 (=480/2, or half the window-space in osu!stable)
         /// </remarks>
-        protected const float SPINNER_TOP_OFFSET = 45f - 16f;
+        protected const float SPINNER_TOP_OFFSET = 0f;//45f - 16f;
 
-        protected const float SPINNER_Y_CENTRE = SPINNER_TOP_OFFSET + 219f;
+        protected const float SPINNER_Y_CENTRE = SPINNER_TOP_OFFSET;// + 219f;
 
         private const float spm_hide_offset = 50f;
 
@@ -52,7 +52,7 @@ namespace osu.Game.Rulesets.Osu.Skinning.Legacy
             // osu!stable positions spinner components in window-space (as opposed to gamefield-space). This is a 640x480 area taking up the entire screen.
             // In lazer, the gamefield-space positional transformation is applied in OsuPlayfieldAdjustmentContainer, which is inverted here to make this area take up the entire window space.
             Size = new Vector2(640, 480);
-            Position = new Vector2(0, -8f);
+            Position = new Vector2(0, -45f); // -8
 
             DrawableSpinner = (DrawableSpinner)drawableHitObject;
 
@@ -65,28 +65,28 @@ namespace osu.Game.Rulesets.Osu.Skinning.Legacy
                     spin = new Sprite
                     {
                         Alpha = 0,
-                        Anchor = Anchor.TopCentre,
+                        Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
                         Texture = source.GetTexture("spinner-spin"),
                         Scale = new Vector2(SPRITE_SCALE),
-                        Y = SPINNER_TOP_OFFSET + 335,
+                        Y = SPINNER_TOP_OFFSET + 45,
                     },
                     clear = new Sprite
                     {
                         Alpha = 0,
-                        Anchor = Anchor.TopCentre,
+                        Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
                         Texture = source.GetTexture("spinner-clear"),
                         Scale = new Vector2(SPRITE_SCALE),
-                        Y = SPINNER_TOP_OFFSET + 115,
+                        Y = SPINNER_TOP_OFFSET - 30,
                     },
                     bonusCounter = new LegacySpriteText(LegacyFont.Score)
                     {
                         Alpha = 0,
-                        Anchor = Anchor.TopCentre,
+                        Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
                         Scale = new Vector2(SPRITE_SCALE),
-                        Y = SPINNER_TOP_OFFSET + 299,
+                        Y = SPINNER_TOP_OFFSET + 100,
                     },
                     spmBackground = new Sprite
                     {
@@ -94,14 +94,14 @@ namespace osu.Game.Rulesets.Osu.Skinning.Legacy
                         Origin = Anchor.TopLeft,
                         Texture = source.GetTexture("spinner-rpm"),
                         Scale = new Vector2(SPRITE_SCALE),
-                        Position = new Vector2(-87, 445 + spm_hide_offset),
+                        Position = new Vector2(-87, 445 + 45 - 8 + spm_hide_offset),
                     },
                     spmCounter = new LegacySpriteText(LegacyFont.Score)
                     {
                         Anchor = Anchor.TopCentre,
                         Origin = Anchor.TopRight,
                         Scale = new Vector2(SPRITE_SCALE * 0.9f),
-                        Position = new Vector2(80, 448 + spm_hide_offset),
+                        Position = new Vector2(80, 448 + 45 - 8 + spm_hide_offset),
                     },
                 }
             });
@@ -126,13 +126,13 @@ namespace osu.Game.Rulesets.Osu.Skinning.Legacy
 
                 if (DrawableSpinner.CurrentBonusScore == DrawableSpinner.MaximumBonusScore)
                 {
-                    bonusCounter.ScaleTo(1.4f).Then().ScaleTo(1.8f, 1000, Easing.Out);
+                    bonusCounter.ScaleTo(1.5f, 100, Easing.Out).Then().ScaleTo(1f, 1000, Easing.Out);
                     bonusCounter.FadeOutFromOne(500, Easing.Out);
                 }
                 else
                 {
                     bonusCounter.FadeOutFromOne(800, Easing.Out);
-                    bonusCounter.ScaleTo(SPRITE_SCALE * 2f).Then().ScaleTo(SPRITE_SCALE * 1.28f, 800, Easing.Out);
+                    //bonusCounter.ScaleTo(SPRITE_SCALE * 1f).Then().ScaleTo(SPRITE_SCALE * 1f, 800, Easing.Out);
                 }
             });
 

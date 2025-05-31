@@ -15,8 +15,8 @@ namespace osu.Game.Skinning
         public static SkinInfo CreateInfo() => new SkinInfo
         {
             ID = Skinning.SkinInfo.CLASSIC_SKIN, // this is temporary until database storage is decided upon.
-            Name = "osu! \"classic\" (2013-25)",
-            Creator = "team osu!",
+            Name = "osu!stream \"classic\" (2012)",
+            Creator = "team osu!stream",
             Protected = true,
             InstantiationInfo = typeof(DefaultLegacySkin).GetInvariantInstantiationInfo()
         };
@@ -34,16 +34,17 @@ namespace osu.Game.Skinning
                 new NamespacedResourceStore<byte[]>(resources.Resources, "Skins/Legacy")
             )
         {
-            Configuration.CustomColours["SliderBall"] = new Color4(2, 170, 255, 255);
+            Configuration.CustomColours["SliderBall"] = new Color4(255, 255, 255, 255);
             Configuration.CustomComboColours = new List<Color4>
             {
-                new Color4(255, 192, 0, 255),
-                new Color4(0, 202, 0, 255),
-                new Color4(18, 124, 255, 255),
-                new Color4(242, 24, 57, 255)
+                // N-TODO: rip these colors precisely, i colorpicked from web and its off
+                new Color4(254,227,0,255), //yellow 4
+                new Color4(254,0,161,255), //pink 1
+                new Color4(0,169,255,255), //blue 2
+                new Color4(254,169,14,255) //orange 3
             };
 
-            Configuration.ConfigDictionary[nameof(SkinConfiguration.LegacySetting.AllowSliderBallTint)] = @"true";
+            Configuration.ConfigDictionary[nameof(SkinConfiguration.LegacySetting.AllowSliderBallTint)] = @"false";
 
             Configuration.LegacyVersion = 2.7m;
         }

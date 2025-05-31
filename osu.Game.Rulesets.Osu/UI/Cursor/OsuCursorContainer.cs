@@ -82,14 +82,18 @@ namespace osu.Game.Rulesets.Osu.UI.Cursor
         {
             base.Update();
 
-            if (cursorTrail.Drawable is CursorTrail trail)
+            if (cursorTrail.Drawable is CursorTrail trail) // N-TODO: Cursor trail appears late in autoplay, indicating the button is being held for too long.
             {
-                trail.NewPartScale = ActiveCursor.CurrentExpandedScale;
+                if (downCount > 0)
+                    trail.NewPartScale = new Vector2(1);
+                else
+                    trail.NewPartScale = new Vector2(0);
                 trail.PartRotation = ActiveCursor.CurrentRotation;
             }
+
         }
 
-        public bool OnPressed(KeyBindingPressEvent<OsuAction> e)
+        public bool OnPressed(KeyBindingPressEvent<OsuAction> e) //this has to get changed to autoplay over note instead of press
         {
             switch (e.Action)
             {
@@ -103,7 +107,7 @@ namespace osu.Game.Rulesets.Osu.UI.Cursor
             return false;
         }
 
-        public void OnReleased(KeyBindingReleaseEvent<OsuAction> e)
+        public void OnReleased(KeyBindingReleaseEvent<OsuAction> e) //this has to get changed to autoplay over note instead of press
         {
             switch (e.Action)
             {

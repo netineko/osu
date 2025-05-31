@@ -30,15 +30,22 @@ namespace osu.Game.Rulesets.Osu.Skinning.Argon
                     Origin = Anchor.Centre,
                     RelativeSizeAxes = Axes.Both,
                     Masking = true,
-                    BorderThickness = 6,
-                    BorderColour = ColourInfo.GradientVertical(Colour4.FromHex("FC618F"), Colour4.FromHex("BB1A41")),
                     Children = new Drawable[]
                     {
-                        new Box
+                        new CircularContainer
                         {
+                            Origin = Anchor.Centre, Anchor = Anchor.Centre,
                             RelativeSizeAxes = Axes.Both,
-                            Alpha = 0.4f,
-                            Colour = Colour4.FromHex("FC618F").Darken(0.6f),
+                            //Scale = new Vector2(0.7f),
+                            Masking = true,
+                            Children = new Drawable[]
+                            {
+                                new Box
+                                {
+                                    RelativeSizeAxes = Axes.Both,
+                                    Colour = ColourInfo.GradientVertical(Colour4.FromHex("FC618F"), Colour4.FromHex("BB1A41")),
+                                },
+                            },
                         },
                         new CircularContainer
                         {
@@ -46,7 +53,7 @@ namespace osu.Game.Rulesets.Osu.Skinning.Argon
                             Anchor = Anchor.Centre,
                             RelativeSizeAxes = Axes.Both,
                             Masking = true,
-                            BorderThickness = 2,
+                            BorderThickness = 3,
                             BorderColour = Color4.White.Opacity(0.8f),
                             Children = new Drawable[]
                             {
@@ -58,20 +65,6 @@ namespace osu.Game.Rulesets.Osu.Skinning.Argon
                                 },
                             },
                         },
-                    },
-                },
-                new Circle
-                {
-                    Origin = Anchor.Centre,
-                    Anchor = Anchor.Centre,
-                    RelativeSizeAxes = Axes.Both,
-                    Scale = new Vector2(0.2f),
-                    Colour = new Color4(255, 255, 255, 255),
-                    EdgeEffect = new EdgeEffectParameters
-                    {
-                        Type = EdgeEffectType.Glow,
-                        Radius = 20,
-                        Colour = new Color4(171, 255, 255, 100),
                     },
                 },
             };
