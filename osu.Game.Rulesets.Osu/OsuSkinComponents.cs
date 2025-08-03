@@ -22,5 +22,7 @@ namespace osu.Game.Rulesets.Osu
         SpinnerBody,
         CursorSmoke,
         ApproachCircle,
+        HoldNoteHitCircle,
+        HoldNoteApproach,
     }
 }
