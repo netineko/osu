@@ -65,6 +65,11 @@ namespace osu.Game.Localisation
         public static LocalisableString LogoType => new TranslatableString(getKey(@"logo_type"), @"Logo type");
 
         /// <summary>
+        /// "Background type"
+        /// </summary>
+        public static LocalisableString BackgroundType => new TranslatableString(getKey(@"background_type"), @"Background type");
+
+        /// <summary>
         /// "Background source"
         /// </summary>
         public static LocalisableString BackgroundSource => new TranslatableString(getKey(@"background_source"), @"Background source");
@@ -188,6 +193,26 @@ namespace osu.Game.Localisation
         /// "Sometimes"
         /// </summary>
         public static LocalisableString SometimesSeasonalBackground => new TranslatableString(getKey(@"sometimes_seasonal_backgrounds"), @"Sometimes");
+
+        /// <summary>
+        /// "Triangles"
+        /// </summary>
+        public static LocalisableString BackgroundTriangles => new TranslatableString(getKey(@"background_triangles"), @"Triangles");
+
+        /// <summary>
+        /// "Sliders"
+        /// </summary>
+        public static LocalisableString BackgroundSliders => new TranslatableString(getKey(@"background_sliders"), @"Sliders");
+
+        /// <summary>
+        /// "Sliders (old)"
+        /// </summary>
+        public static LocalisableString BackgroundSlidersOld => new TranslatableString(getKey(@"background_sliders_old"), @"Sliders (old)");
+
+        /// <summary>
+        /// "Icons"
+        /// </summary>
+        public static LocalisableString BackgroundIcons => new TranslatableString(getKey(@"background_icons"), @"Icons");
 
         /// <summary>
         /// "Sequential"

@@ -27,11 +27,13 @@ namespace osu.Game.Screens.Backgrounds
         private Background background;
 
         private int currentDisplay;
-        private const int background_count = 8;
+        private int backgroundCount = 8;
         private IBindable<APIUser> user;
         private Bindable<Skin> skin;
         private Bindable<BackgroundSource> source;
         private Bindable<IntroSequence> introSequence;
+        private Bindable<BackgroundType> backgroundType;
+        private string backgroundImage = "icons";
         private readonly SeasonalBackgroundLoader seasonalBackgroundLoader = new SeasonalBackgroundLoader();
 
         [Resolved]
@@ -48,6 +50,7 @@ namespace osu.Game.Screens.Backgrounds
             user = api.LocalUser.GetBoundCopy();
             skin = skinManager.CurrentSkin.GetBoundCopy();
             source = config.GetBindable<BackgroundSource>(OsuSetting.MenuBackgroundSource);
+            backgroundType = config.GetBindable<BackgroundType>(OsuSetting.BackgroundType);
             introSequence = config.GetBindable<IntroSequence>(OsuSetting.IntroSequence);
 
             AddInternal(seasonalBackgroundLoader);
@@ -62,9 +65,10 @@ namespace osu.Game.Screens.Backgrounds
             source.ValueChanged += _ => Scheduler.AddOnce(next);
             beatmap.ValueChanged += _ => Scheduler.AddOnce(next);
             introSequence.ValueChanged += _ => Scheduler.AddOnce(next);
+            backgroundType.ValueChanged += _ => Scheduler.AddOnce(next);
             seasonalBackgroundLoader.SeasonalBackgroundChanged += () => Scheduler.AddOnce(next);
 
-            currentDisplay = RNG.Next(0, background_count);
+            currentDisplay = RNG.Next(0, backgroundCount);
             Next();
 
             // helper function required for AddOnce usage.
@@ -108,6 +112,13 @@ namespace osu.Game.Screens.Backgrounds
         /// <returns>Whether a new background was queued for load. May return false if the current background is still valid.</returns>
         public virtual bool Next()
         {
+            switch (backgroundType.Value)
+            {
+                case BackgroundType.Triangles: backgroundCount = 8; backgroundImage = "triangles"; break;
+                case BackgroundType.Sliders: backgroundCount = 7; backgroundImage = "sliders"; break;
+                case BackgroundType.SlidersOld: backgroundCount = 5; backgroundImage = "sliders-old"; break;
+                case BackgroundType.Icons: backgroundCount = 1; backgroundImage = "icons"; break;
+            }
             var nextBackground = createBackground();
 
             // in the case that the background hasn't changed, we want to avoid cancelling any tasks that could still be loading.
@@ -194,7 +205,7 @@ namespace osu.Game.Screens.Backgrounds
                     return @"Intro/Welcome/menu-background";
 
                 default:
-                    return $@"Menu/menu-background-{currentDisplay % background_count + 1}";
+                    return $@"Menu/menu-background-{backgroundImage}/{currentDisplay % backgroundCount + 1}";
             }
         }
     }

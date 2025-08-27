@@ -19,13 +19,16 @@ namespace osu.Game.Overlays.Settings.Sections.UserInterface
         protected override LocalisableString Header => UserInterfaceStrings.MainMenuHeader;
 
         private IBindable<APIUser> user;
+        private IBindable<SeasonalBackgroundMode> seasonalBackground;
 
         private SettingsEnumDropdown<BackgroundSource> backgroundSourceDropdown;
+        private SettingsEnumDropdown<BackgroundType> backgroundTypeDropdown;
 
         [BackgroundDependencyLoader]
         private void load(OsuConfigManager config, IAPIProvider api)
         {
             user = api.LocalUser.GetBoundCopy();
+            seasonalBackground = config.GetBindable<SeasonalBackgroundMode>(OsuSetting.SeasonalBackgroundMode);
 
             Children = new Drawable[]
             {
@@ -65,6 +68,11 @@ namespace osu.Game.Overlays.Settings.Sections.UserInterface
                 {
                     LabelText = UserInterfaceStrings.SeasonalBackgrounds,
                     Current = config.GetBindable<SeasonalBackgroundMode>(OsuSetting.SeasonalBackgroundMode),
+                },
+                backgroundTypeDropdown = new SettingsEnumDropdown<BackgroundType> // Consider merging this setting with BackgroundSource
+                {
+                    LabelText = UserInterfaceStrings.BackgroundType,
+                    Current = config.GetBindable<BackgroundType>(OsuSetting.BackgroundType),
                 }
             };
         }
@@ -79,6 +87,13 @@ namespace osu.Game.Overlays.Settings.Sections.UserInterface
                     backgroundSourceDropdown.SetNoticeText(UserInterfaceStrings.NotSupporterNote, true);
                 else
                     backgroundSourceDropdown.ClearNoticeText();
+            }, true);
+            seasonalBackground.BindValueChanged(u =>
+            {
+                if (u.NewValue != SeasonalBackgroundMode.Always)
+                    backgroundTypeDropdown.Current.Disabled = false;
+                else
+                    backgroundTypeDropdown.Current.Disabled = true;
             }, true);
         }
     }

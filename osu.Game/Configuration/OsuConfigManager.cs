@@ -196,6 +196,7 @@ namespace osu.Game.Configuration
 
             SetDefault(OsuSetting.MenuBackgroundSource, BackgroundSource.Skin);
             SetDefault(OsuSetting.SeasonalBackgroundMode, SeasonalBackgroundMode.Sometimes);
+            SetDefault(OsuSetting.BackgroundType, BackgroundType.Triangles);
 
             SetDefault(OsuSetting.DiscordRichPresence, DiscordRichPresenceMode.Full);
 
@@ -437,6 +438,7 @@ namespace osu.Game.Configuration
         HitLighting,
         StarFountains,
         MenuBackgroundSource,
+        BackgroundType,
         GameplayDisableWinKey,
         SeasonalBackgroundMode,
         EditorWaveformOpacity,
