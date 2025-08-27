@@ -29,6 +29,16 @@ namespace osu.Game.Localisation.HUD
         /// </summary>
         public static LocalisableString ShowTimeDescription => new TranslatableString(getKey(@"show_time_description"), "Whether the passed and remaining time should be shown");
 
+        /// <summary>
+        /// "Legacy style"
+        /// </summary>
+        public static LocalisableString OldStyle => new TranslatableString(getKey(@"old_style"), "Legacy style");
+
+        /// <summary>
+        /// "Use the legacy pie style"
+        /// </summary>
+        public static LocalisableString OldStyleDescription => new TranslatableString(getKey(@"old_style_description"), "Use the legacy pie style");
+
         private static string getKey(string key) => $"{prefix}:{key}";
     }
 }

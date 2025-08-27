@@ -2,10 +2,14 @@
 // See the LICENCE file in the repository root for full licence text.
 
 using osu.Framework.Allocation;
+using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.UserInterface;
+using osu.Game.Configuration;
+using osu.Game.Localisation.HUD;
+using osu.Game.Localisation.SkinComponents;
 using osu.Game.Screens.Play.HUD;
 using osuTK;
 
@@ -14,10 +18,14 @@ namespace osu.Game.Skinning
     public partial class LegacySongProgress : SongProgress
     {
         private CircularProgress circularProgress = null!;
+        private Circle middleDot;
 
         // Legacy song progress doesn't support interaction for now.
         public override bool HandleNonPositionalInput => false;
         public override bool HandlePositionalInput => false;
+
+        [SettingSource(typeof(SongProgressStrings), nameof(SongProgressStrings.OldStyle), nameof(SongProgressStrings.OldStyleDescription))]
+        public Bindable<bool> OldStyle { get; } = new BindableBool(false);
 
         public LegacySongProgress()
         {
@@ -55,7 +63,7 @@ namespace osu.Game.Skinning
                         Alpha = 0,
                     }
                 },
-                new Circle
+                middleDot = new Circle
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
@@ -81,6 +89,8 @@ namespace osu.Game.Skinning
                 circularProgress.Colour = new Colour4(255, 255, 255, 153);
                 circularProgress.Progress = progress;
             }
+            if (OldStyle.Value) middleDot.Alpha = 0;
+            else middleDot.Alpha = 1;
         }
     }
 }
