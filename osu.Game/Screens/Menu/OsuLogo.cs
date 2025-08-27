@@ -9,6 +9,7 @@ using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
 using osu.Framework.Audio.Track;
+using osu.Framework.Bindables;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Colour;
@@ -20,6 +21,7 @@ using osu.Framework.Input.Events;
 using osu.Framework.Input.StateChanges;
 using osu.Framework.Utils;
 using osu.Game.Beatmaps.ControlPoints;
+using osu.Game.Configuration;
 using osu.Game.Graphics.Backgrounds;
 using osu.Game.Graphics.Containers;
 using osu.Game.Overlays;
@@ -42,13 +44,21 @@ namespace osu.Game.Screens.Menu
         /// </summary>
         public static readonly Vector2 SCALE_ADJUST = new Vector2(0.94f);
 
+        private Bindable<LogoType> logoType;
         private readonly Sprite logo;
+        private readonly Sprite logoOld;
+        private readonly Sprite logoBump;
+        private int bumpType = 2;
+        private bool legacyRipple = false;
+        private bool legacyFlash = false;
+        private readonly CircularContainer logoBumpContainer;
         private readonly CircularContainer logoContainer;
         private readonly Container logoBounceContainer;
         private readonly Container logoBeatContainer;
         private readonly Container logoAmplitudeContainer;
         private readonly Container logoHoverContainer;
         private readonly MenuLogoVisualisation visualizer;
+        private readonly ClassicMenuLogoVisualisation visualizerOld;
 
         private readonly IntroSequence intro;
 
@@ -56,6 +66,7 @@ namespace osu.Game.Screens.Menu
         private SampleChannel sampleClickChannel;
 
         protected virtual MenuLogoVisualisation CreateMenuLogoVisualisation() => new MenuLogoVisualisation();
+        protected virtual ClassicMenuLogoVisualisation CreateClassicMenuLogoVisualisation() => new ClassicMenuLogoVisualisation();
 
         protected virtual double BeatSampleVariance => 0.1;
 
@@ -64,6 +75,8 @@ namespace osu.Game.Screens.Menu
 
         private readonly Container colourAndTriangles;
         private readonly TrianglesV2 triangles;
+        private readonly Triangles trianglesOld;
+        private readonly Box background;
 
         /// <summary>
         /// Return value decides whether the logo should play its own sample for the click action.
@@ -165,11 +178,39 @@ namespace osu.Game.Screens.Menu
                                                     v.Alpha = visualizer_default_alpha;
                                                     v.Size = SCALE_ADJUST;
                                                 }),
+                                                visualizerOld = CreateClassicMenuLogoVisualisation().With(v =>
+                                                {
+                                                    v.RelativeSizeAxes = Axes.Both;
+                                                    v.Origin = Anchor.Centre;
+                                                    v.Anchor = Anchor.Centre;
+                                                    v.Alpha = visualizer_default_alpha;
+                                                    v.Size = SCALE_ADJUST;
+                                                }),
                                                 LogoElements = new Container
                                                 {
                                                     AutoSizeAxes = Axes.Both,
                                                     Children = new Drawable[]
                                                     {
+                                                        logoOld = new Sprite
+                                                        {
+                                                            Anchor = Anchor.Centre,
+                                                            Origin = Anchor.Centre,
+                                                        },
+                                                        logoBumpContainer = new CircularContainer
+                                                        {
+                                                            Anchor = Anchor.Centre,
+                                                            Origin = Anchor.Centre,
+                                                            RelativeSizeAxes = Axes.Both,
+                                                            Children = new Drawable[]
+                                                            {
+                                                                logoBump = new Sprite
+                                                                {
+                                                                    Anchor = Anchor.Centre,
+                                                                    Origin = Anchor.Centre,
+                                                                    Alpha = 0.3F,
+                                                                },
+                                                            }
+                                                        },
                                                         logoContainer = new CircularContainer
                                                         {
                                                             Anchor = Anchor.Centre,
@@ -186,7 +227,7 @@ namespace osu.Game.Screens.Menu
                                                                     Origin = Anchor.Centre,
                                                                     Children = new Drawable[]
                                                                     {
-                                                                        new Box
+                                                                        background = new Box
                                                                         {
                                                                             RelativeSizeAxes = Axes.Both,
                                                                             Colour = ColourInfo.GradientVertical(Color4Extensions.FromHex(@"ff66ab"), Color4Extensions.FromHex(@"cc5289")),
@@ -199,6 +240,14 @@ namespace osu.Game.Screens.Menu
                                                                             ScaleAdjust = 3,
                                                                             SpawnRatio = 1.4f,
                                                                             Colour = ColourInfo.GradientVertical(Color4Extensions.FromHex(@"ff66ab"), Color4Extensions.FromHex(@"b6346f")),
+                                                                            RelativeSizeAxes = Axes.Both,
+                                                                        },
+                                                                        trianglesOld = new Triangles
+                                                                        {
+                                                                            Alpha = 0,
+                                                                            TriangleScale = 4,
+                                                                            ColourLight = Color4Extensions.FromHex(@"ff7db7"),
+                                                                            ColourDark = Color4Extensions.FromHex(@"de5b95"),
                                                                             RelativeSizeAxes = Axes.Both,
                                                                         },
                                                                     }
@@ -274,17 +323,145 @@ namespace osu.Game.Screens.Menu
             else
                 Schedule(runnableAction);
         }
-
+        private TextureStore textures;
         [BackgroundDependencyLoader]
-        private void load(TextureStore textures, AudioManager audio)
+        private void load(TextureStore textures, AudioManager audio, OsuConfigManager config)
         {
+            this.textures = textures;
+            logoType = config.GetBindable<LogoType>(OsuSetting.LogoType);
             sampleClick = audio.Samples.Get(@"Menu/osu-logo-select");
 
             SampleBeat = audio.Samples.Get(@"Menu/osu-logo-heartbeat");
             SampleDownbeat = audio.Samples.Get(@"Menu/osu-logo-downbeat");
 
-            logo.Texture = textures.Get(@"Menu/logo");
-            ripple.Texture = textures.Get(@"Menu/logo");
+            logo.Texture = textures.Get(@"Menu/logo/latest");
+            updateType();
+        }
+        private void updateType()
+        {
+            switch (logoType.Value)
+            {
+                case LogoType.Lazer:
+                    {
+                        logo.Texture = textures.Get(@"Menu/logo/latest");
+                        ripple.Texture = textures.Get(@"Menu/logo/latest");
+                        background.Colour = ColourInfo.GradientVertical(Color4Extensions.FromHex(@"ff66ab"), Color4Extensions.FromHex(@"cc5289"));
+                        visualizer.Scale = new Vector2(1);
+                        visualizerOld.Scale = new Vector2(0);
+                        trianglesOld.Alpha = 0;
+                        triangles.Alpha = 1;
+                        logo.Alpha = 1;
+                        background.Alpha = 1;
+                        bumpType = 2;
+                        break;
+                    }
+                case LogoType.Classic0:
+                    {
+                        logoOld.Texture = textures.Get(@"Menu/logo/0");
+                        logoBump.Texture = textures.Get(@"Menu/logo/0");
+                        ripple.Texture = textures.Get(@"Menu/logo-ripple-0");
+                        triangles.Alpha = 0;
+                        trianglesOld.Alpha = 0;
+                        background.Alpha = 0;
+                        logo.Alpha = 0;
+                        flashLayer.Scale = new Vector2(0);
+                        visualizer.Scale = new Vector2(0);
+                        visualizerOld.Scale = new Vector2(0);
+                        bumpType = 0;
+                        //legacyRipple = true; // NETI-TODO: implement this properly before it gets enabled
+                        break;
+                    }
+                case LogoType.Classic1:
+                    {
+                        logoOld.Texture = textures.Get(@"Menu/logo/1");
+                        logoBump.Texture = textures.Get(@"Menu/logo/1");
+                        ripple.Texture = textures.Get(@"Menu/logo-ripple");
+                        triangles.Alpha = 0;
+                        trianglesOld.Alpha = 0;
+                        background.Alpha = 0;
+                        logo.Alpha = 0;
+                        visualizer.Scale = new Vector2(0);
+                        visualizerOld.Scale = new Vector2(0);
+                        bumpType = 0;
+                        //legacyRipple = true; // NETI-TODO: implement this properly before it gets enabled
+                        break;
+                    }
+                case LogoType.Classic2:
+                    {
+                        logoOld.Texture = textures.Get(@"Menu/logo/2");
+                        logoBump.Texture = textures.Get(@"Menu/logo/2");
+                        ripple.Texture = textures.Get(@"Menu/logo-ripple");
+                        triangles.Alpha = 0;
+                        trianglesOld.Alpha = 0;
+                        background.Alpha = 0;
+                        logo.Alpha = 0;
+                        //visualizer.Scale = new Vector2(0);
+                        bumpType = 1;
+                        //legacyRipple = true; // NETI-TODO: implement this properly before it gets enabled
+                        legacyFlash = true;
+                        visualizer.Scale = new Vector2(0);
+                        visualizerOld.Scale = new Vector2(1);
+                        break;
+                    }
+                case LogoType.Stable:
+                    {
+                        logoOld.Texture = textures.Get(@"Menu/logo/3");
+                        logoBump.Texture = textures.Get(@"Menu/logo/3");
+                        ripple.Texture = textures.Get(@"Menu/logo/3");
+                        triangles.Alpha = 0;
+                        trianglesOld.Alpha = 0;
+                        background.Alpha = 0;
+                        logo.Alpha = 0;
+                        visualizer.Scale = new Vector2(1);
+                        visualizerOld.Scale = new Vector2(0);
+                        legacyFlash = true;
+                        bumpType = 1;
+                        break;
+                    }
+                case LogoType.Lazer1:
+                    {
+                        logo.Texture = textures.Get(@"Menu/logo/4");
+                        ripple.Texture = textures.Get(@"Menu/logo/4");
+                        trianglesOld.Alpha = 1;
+                        triangles.Alpha = 0;
+                        logo.Alpha = 1;
+                        background.Alpha = 1;
+                        background.Colour = Color4Extensions.FromHex(@"e967a1");
+                        visualizer.Scale = new Vector2(1);
+                        visualizerOld.Scale = new Vector2(0);
+                        legacyFlash = true;
+                        bumpType = 2;
+                        break;
+                    }
+                case LogoType.Lazer2:
+                    {
+                        logo.Texture = textures.Get(@"Menu/logo/5");
+                        ripple.Texture = textures.Get(@"Menu/logo/5");
+                        visualizer.Scale = new Vector2(1);
+                        visualizerOld.Scale = new Vector2(0);
+                        background.Colour = ColourInfo.GradientVertical(Color4Extensions.FromHex(@"ff66ab"), Color4Extensions.FromHex(@"cc5289"));
+                        trianglesOld.Alpha = 0;
+                        triangles.Alpha = 1;
+                        logo.Alpha = 1;
+                        background.Alpha = 1;
+                        bumpType = 2;
+                        break;
+                    }
+                case LogoType.Lazer3:
+                    {
+                        logo.Texture = textures.Get(@"Menu/logo/6");
+                        ripple.Texture = textures.Get(@"Menu/logo/6");
+                        visualizer.Scale = new Vector2(1);
+                        visualizerOld.Scale = new Vector2(0);
+                        background.Colour = ColourInfo.GradientVertical(Color4Extensions.FromHex(@"ff66ab"), Color4Extensions.FromHex(@"cc5289"));
+                        trianglesOld.Alpha = 0;
+                        triangles.Alpha = 1;
+                        logo.Alpha = 1;
+                        background.Alpha = 1;
+                        bumpType = 2;
+                        break;
+                    }
+            }
         }
 
         private int lastBeatIndex;
@@ -292,6 +469,8 @@ namespace osu.Game.Screens.Menu
         protected override void OnNewBeat(int beatIndex, TimingControlPoint timingPoint, EffectControlPoint effectPoint, ChannelAmplitudes amplitudes)
         {
             base.OnNewBeat(beatIndex, timingPoint, effectPoint, amplitudes);
+
+            updateType();
 
             lastBeatIndex = beatIndex;
 
@@ -319,28 +498,74 @@ namespace osu.Game.Screens.Menu
                 });
             }
 
-            logoBeatContainer
-                .ScaleTo(1 - 0.02f * amplitudeAdjust, early_activation, Easing.Out).Then()
-                .ScaleTo(1, beatLength * 2, Easing.OutQuint);
+            if (bumpType == 0)
+            {
+                logoOld
+                    .ScaleTo(1 + 0.05f * amplitudeAdjust, 0, Easing.Out).Then()
+                    .ScaleTo(1, beatLength, Easing.Out);
+                logoBump
+                    .ScaleTo(1 + 0.05f * amplitudeAdjust, 0, Easing.Out).Then()
+                    .ScaleTo(1.1f, beatLength, Easing.Out);
+                logoBumpContainer
+                    .FadeOutFromOne(beatLength, Easing.Out);
+            }
+            else if (bumpType == 1)
+            {
+                logoOld
+                    .ScaleTo(1 - 0.03f, beatLength / 30).Then()
+                    .ScaleTo(1, beatLength - beatLength / 30);
+                logoBump
+                    .ScaleTo(1 + 0.03f, beatLength / 30).Then()
+                    .ScaleTo(1f, beatLength - beatLength / 30);
+                logoBump.Alpha = 0.15F;
+            }
+            else
+            {
+                logoBeatContainer
+                    .ScaleTo(1 - 0.02f * amplitudeAdjust, early_activation, Easing.Out).Then()
+                    .ScaleTo(1, beatLength * 2, Easing.OutQuint);
+            }
 
             ripple.ClearTransforms();
-            ripple
-                .ScaleTo(logoAmplitudeContainer.Scale)
-                .ScaleTo(logoAmplitudeContainer.Scale * (1 + 0.04f * amplitudeAdjust), beatLength, Easing.OutQuint)
-                .FadeTo(0.15f * amplitudeAdjust).FadeOut(beatLength, Easing.OutQuint);
+            if (!legacyRipple)
+            {
+                ripple
+                    .ScaleTo(logoAmplitudeContainer.Scale)
+                    .ScaleTo(logoAmplitudeContainer.Scale * (1 + 0.04f * amplitudeAdjust), beatLength, Easing.OutQuint)
+                    .FadeTo(0.15f * amplitudeAdjust).FadeOut(beatLength, Easing.OutQuint);
+            }
+            else
+            {
+                ripple
+                    .ScaleTo(1)
+                    .ScaleTo(1.4F, beatLength*2, Easing.OutQuint)
+                    .FadeOutFromOne(beatLength*2, Easing.OutQuint);
+            }
 
-            if (effectPoint.KiaiMode && flashLayer.Alpha < 0.4f)
+
+            if (effectPoint.KiaiMode && flashLayer.Alpha < 0.4f && bumpType != 0)
             {
                 flashLayer.ClearTransforms();
-                flashLayer
-                    .FadeTo(0.2f * amplitudeAdjust, early_activation, Easing.Out).Then()
-                    .FadeOut(beatLength);
+                if (!legacyFlash)
+                {
+                    flashLayer
+                        .FadeTo(0.2f * amplitudeAdjust, early_activation, Easing.Out).Then()
+                        .FadeOut(beatLength);
+                }
+                else
+                {
+                    flashLayer
+                        .FadeTo(0, early_activation).Then()
+                        .FadeTo(0.05f * amplitudeAdjust, beatLength);
+                }
 
                 visualizer.ClearTransforms();
                 visualizer
                     .FadeTo(visualizer_default_alpha * 1.8f * amplitudeAdjust, early_activation, Easing.Out).Then()
                     .FadeTo(visualizer_default_alpha, beatLength);
             }
+            else
+                flashLayer.FadeTo(0, beatLength);
 
             this.Delay(early_activation).Schedule(() =>
             {
@@ -368,16 +593,19 @@ namespace osu.Game.Screens.Menu
 
             const float scale_adjust_cutoff = 0.4f;
 
-            if (musicController.CurrentTrack.IsRunning)
+            if (bumpType != 0)
             {
-                float maxAmplitude = lastBeatIndex >= 0 ? musicController.CurrentTrack.CurrentAmplitudes.Maximum : 0;
-                logoAmplitudeContainer.Scale = new Vector2((float)Interpolation.Damp(logoAmplitudeContainer.Scale.X, 1 - Math.Max(0, maxAmplitude - scale_adjust_cutoff) * 0.04f, 0.9f, Time.Elapsed));
+                if (musicController.CurrentTrack.IsRunning)
+                {
+                    float maxAmplitude = lastBeatIndex >= 0 ? musicController.CurrentTrack.CurrentAmplitudes.Maximum : 0;
+                    logoAmplitudeContainer.Scale = new Vector2((float)Interpolation.Damp(logoAmplitudeContainer.Scale.X, 1 - Math.Max(0, maxAmplitude - scale_adjust_cutoff) * 0.04f, 0.9f, Time.Elapsed));
 
-                triangles.Velocity = (float)Interpolation.Damp(triangles.Velocity, triangles_paused_velocity * (IsKiaiTime ? 4 : 2), 0.995f, Time.Elapsed);
-            }
-            else
-            {
-                triangles.Velocity = (float)Interpolation.Damp(triangles.Velocity, triangles_paused_velocity, 0.9f, Time.Elapsed);
+                    triangles.Velocity = (float)Interpolation.Damp(triangles.Velocity, triangles_paused_velocity * (IsKiaiTime ? 4 : 2), 0.995f, Time.Elapsed);
+                }
+                else
+                {
+                    triangles.Velocity = (float)Interpolation.Damp(triangles.Velocity, triangles_paused_velocity, 0.9f, Time.Elapsed);
+                }
             }
         }
 

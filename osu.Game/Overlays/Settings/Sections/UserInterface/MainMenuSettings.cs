@@ -51,6 +51,11 @@ namespace osu.Game.Overlays.Settings.Sections.UserInterface
                     LabelText = UserInterfaceStrings.IntroSequence,
                     Current = config.GetBindable<IntroSequence>(OsuSetting.IntroSequence),
                 },
+                new SettingsEnumDropdown<LogoType>
+                {
+                    LabelText = UserInterfaceStrings.LogoType,
+                    Current = config.GetBindable<LogoType>(OsuSetting.LogoType),
+                },
                 backgroundSourceDropdown = new SettingsEnumDropdown<BackgroundSource>
                 {
                     LabelText = UserInterfaceStrings.BackgroundSource,

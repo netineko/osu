@@ -60,6 +60,11 @@ namespace osu.Game.Localisation
         public static LocalisableString IntroSequence => new TranslatableString(getKey(@"intro_sequence"), @"Intro sequence");
 
         /// <summary>
+        /// "Logo type"
+        /// </summary>
+        public static LocalisableString LogoType => new TranslatableString(getKey(@"logo_type"), @"Logo type");
+
+        /// <summary>
         /// "Background source"
         /// </summary>
         public static LocalisableString BackgroundSource => new TranslatableString(getKey(@"background_source"), @"Background source");
@@ -128,6 +133,46 @@ namespace osu.Game.Localisation
         /// "Beatmap (with storyboard / video)"
         /// </summary>
         public static LocalisableString BeatmapWithStoryboard => new TranslatableString(getKey(@"beatmap_with_storyboard"), @"Beatmap (with storyboard / video)");
+
+        /// <summary>
+        /// "osu! 2007"
+        /// </summary>
+        public static LocalisableString Classic0 => new TranslatableString(getKey(@"classic0"), @"osu! 2007");
+
+        /// <summary>
+        /// "osu! 2011"
+        /// </summary>
+        public static LocalisableString Classic1 => new TranslatableString(getKey(@"classic1"), @"osu! 2011");
+
+        /// <summary>
+        /// "osu! waffle (2014)"
+        /// </summary>
+        public static LocalisableString Classic2 => new TranslatableString(getKey(@"classic2"), @"osu! waffle (2014)");
+
+        /// <summary>
+        /// "osu!stable (current)"
+        /// </summary>
+        public static LocalisableString Stable => new TranslatableString(getKey(@"stable"), @"osu!stable (current)");
+
+        /// <summary>
+        /// "osu!lazer (2017)"
+        /// </summary>
+        public static LocalisableString Lazer1 => new TranslatableString(getKey(@"lazer1"), @"osu!lazer (2017)");
+
+        /// <summary>
+        /// "osu! nipple (small)"
+        /// </summary>
+        public static LocalisableString Lazer2 => new TranslatableString(getKey(@"lazer2"), @"osu! nipple (small)");
+
+        /// <summary>
+        /// "osu! nipple (large)"
+        /// </summary>
+        public static LocalisableString Lazer3 => new TranslatableString(getKey(@"lazer3"), @"osu! nipple (large)");
+
+        /// <summary>
+        /// "osu!lazer (current)"
+        /// </summary>
+        public static LocalisableString Lazer => new TranslatableString(getKey(@"lazer"), @"osu!lazer (current)");
 
         /// <summary>
         /// "Always"

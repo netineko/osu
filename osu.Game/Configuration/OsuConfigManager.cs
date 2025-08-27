@@ -192,6 +192,8 @@ namespace osu.Game.Configuration
 
             SetDefault(OsuSetting.IntroSequence, IntroSequence.Triangles);
 
+            SetDefault(OsuSetting.LogoType, LogoType.Lazer);
+
             SetDefault(OsuSetting.MenuBackgroundSource, BackgroundSource.Skin);
             SetDefault(OsuSetting.SeasonalBackgroundMode, SeasonalBackgroundMode.Sometimes);
 
@@ -427,6 +429,7 @@ namespace osu.Game.Configuration
         ScalingBackgroundDim,
         UIScale,
         IntroSequence,
+        LogoType,
         NotifyOnUsernameMentioned,
         NotifyOnPrivateMessage,
         NotifyOnFriendPresenceChange,
