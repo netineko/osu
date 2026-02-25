@@ -28,7 +28,6 @@ using osu.Game.Graphics.UserInterface;
 using osu.Game.Localisation;
 using osu.Game.Overlays.Dialog;
 using osu.Game.Overlays.OSD;
-using osu.Game.Overlays.Settings;
 using osu.Game.Screens.Edit;
 using osu.Game.Screens.Edit.Components;
 using osu.Game.Screens.Edit.Components.Menus;
@@ -36,6 +35,7 @@ using osu.Game.Skinning;
 using osu.Framework.Graphics.Cursor;
 using osu.Game.Input.Bindings;
 using osu.Game.Utils;
+using osu.Game.Graphics.UserInterfaceV2;
 
 namespace osu.Game.Overlays.SkinEditor
 {
@@ -404,8 +404,9 @@ namespace osu.Game.Overlays.SkinEditor
                 {
                     Children = new Drawable[]
                     {
-                        new SettingsDropdown<GlobalSkinnableContainerLookup?>
+                        new FormDropdown<GlobalSkinnableContainerLookup?>
                         {
+                            Caption = SkinEditorStrings.CurrentLayer,
                             Items = availableTargets.Select(t => t.Lookup).Distinct(),
                             Current = selectedTarget,
                         }

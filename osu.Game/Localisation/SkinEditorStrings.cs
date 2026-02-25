@@ -94,6 +94,11 @@ namespace osu.Game.Localisation
         /// </summary>
         public static LocalisableString CurrentWorkingLayer => new TranslatableString(getKey(@"current_working_layer"), @"Current working layer");
 
+        /// <summary>
+        /// "Current layer"
+        /// </summary>
+        public static LocalisableString CurrentLayer => new TranslatableString(getKey(@"current_layer"), @"Current layer");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }

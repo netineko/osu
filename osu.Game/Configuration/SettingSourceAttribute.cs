@@ -13,6 +13,7 @@ using osu.Framework.Extensions.TypeExtensions;
 using osu.Framework.Graphics;
 using osu.Framework.Localisation;
 using osu.Game.Graphics.UserInterface;
+using osu.Game.Graphics.UserInterfaceV2;
 using osu.Game.Overlays.Settings;
 using osu.Game.Utils;
 
@@ -118,8 +119,8 @@ namespace osu.Game.Configuration
                 if (attr.SettingControlType != null)
                 {
                     var controlType = attr.SettingControlType;
-                    if (controlType.EnumerateBaseTypes().All(t => !t.IsGenericType || t.GetGenericTypeDefinition() != typeof(SettingsItem<>)))
-                        throw new InvalidOperationException($"{nameof(SettingSourceAttribute)} had an unsupported custom control type ({controlType.ReadableName()})");
+                    // if (controlType.EnumerateBaseTypes().All(t => !t.IsGenericType || t.GetGenericTypeDefinition() != typeof(SettingsItem<>)))
+                    //     throw new InvalidOperationException($"{nameof(SettingSourceAttribute)} had an unsupported custom control type ({controlType.ReadableName()})");
 
                     var control = (Drawable)Activator.CreateInstance(controlType)!;
                     controlType.GetProperty(nameof(SettingsItem<object>.SettingSourceObject))?.SetValue(control, obj);
@@ -135,59 +136,59 @@ namespace osu.Game.Configuration
                 switch (value)
                 {
                     case BindableNumber<float> bNumber:
-                        yield return new SettingsSlider<float>
+                        yield return new SettingsItemV2(new FormSliderBar<float>
                         {
-                            LabelText = attr.Label,
-                            TooltipText = attr.Description,
+                            Caption = attr.Label,
+                            HintText = attr.Description == string.Empty ? default : attr.Description,
                             Current = bNumber,
                             KeyboardStep = bNumber.Precision,
-                        };
+                        });
 
                         break;
 
                     case BindableNumber<double> bNumber:
-                        yield return new SettingsSlider<double>
+                        yield return new SettingsItemV2(new FormSliderBar<double>
                         {
-                            LabelText = attr.Label,
-                            TooltipText = attr.Description,
+                            Caption = attr.Label,
+                            HintText = attr.Description == string.Empty ? default : attr.Description,
                             Current = bNumber,
                             KeyboardStep = (float)bNumber.Precision,
-                        };
+                        });
 
                         break;
 
                     case BindableNumber<int> bNumber:
-                        yield return new SettingsSlider<int>
+                        yield return new SettingsItemV2(new FormSliderBar<int>
                         {
-                            LabelText = attr.Label,
-                            TooltipText = attr.Description,
+                            Caption = attr.Label,
+                            HintText = attr.Description == string.Empty ? default : attr.Description,
                             Current = bNumber,
                             KeyboardStep = bNumber.Precision,
-                        };
+                        });
 
                         break;
 
                     case Bindable<bool> bBool:
-                        yield return new SettingsCheckbox
+                        yield return new SettingsItemV2(new FormCheckBox
                         {
-                            LabelText = attr.Label,
-                            TooltipText = attr.Description,
-                            Current = bBool
-                        };
+                            Caption = attr.Label,
+                            HintText = attr.Description == string.Empty ? default : attr.Description,
+                            Current = bBool,
+                        });
 
                         break;
 
                     case Bindable<string> bString:
-                        yield return new SettingsTextBox
+                        yield return new SettingsItemV2(new FormTextBox
                         {
-                            LabelText = attr.Label,
-                            TooltipText = attr.Description,
-                            Current = bString
-                        };
+                            Caption = attr.Label,
+                            HintText = attr.Description == string.Empty ? default : attr.Description,
+                            Current = bString,
+                        });
 
                         break;
 
-                    case BindableColour4 bColour:
+                    case BindableColour4 bColour: // can be added once `form-color-picker` branch is merged
                         yield return new SettingsColour
                         {
                             LabelText = attr.Label,
@@ -198,14 +199,14 @@ namespace osu.Game.Configuration
                         break;
 
                     case IBindable bindable:
-                        var dropdownType = typeof(ModSettingsEnumDropdown<>).MakeGenericType(bindable.GetType().GetGenericArguments()[0]);
+                        var dropdownType = typeof(FormEnumDropdown<>).MakeGenericType(bindable.GetType().GetGenericArguments()[0]);
                         var dropdown = (Drawable)Activator.CreateInstance(dropdownType)!;
 
-                        dropdownType.GetProperty(nameof(SettingsDropdown<object>.LabelText))?.SetValue(dropdown, attr.Label);
-                        dropdownType.GetProperty(nameof(SettingsDropdown<object>.TooltipText))?.SetValue(dropdown, attr.Description);
-                        dropdownType.GetProperty(nameof(SettingsDropdown<object>.Current))?.SetValue(dropdown, bindable);
+                        dropdownType.GetProperty(nameof(FormDropdown<object>.Caption))?.SetValue(dropdown, attr.Label);
+                        dropdownType.GetProperty(nameof(FormDropdown<object>.HintText))?.SetValue(dropdown, attr.Description == string.Empty ? default : attr.Description);
+                        dropdownType.GetProperty(nameof(FormDropdown<object>.Current))?.SetValue(dropdown, bindable);
 
-                        yield return dropdown;
+                        yield return new SettingsItemV2((IFormControl)dropdown);
 
                         break;
 
@@ -278,16 +279,5 @@ namespace osu.Game.Configuration
                   .OrderBy(attr => attr.Item1)
                   .ToArray();
 
-        private partial class ModSettingsEnumDropdown<T> : SettingsEnumDropdown<T>
-            where T : struct, Enum
-        {
-            protected override OsuDropdown<T> CreateDropdown() => new ModDropdownControl();
-
-            private partial class ModDropdownControl : DropdownControl
-            {
-                // Set menu's max height low enough to workaround nested scroll issues (see https://github.com/ppy/osu-framework/issues/4536).
-                protected override DropdownMenu CreateMenu() => base.CreateMenu().With(m => m.MaxHeight = 100);
-            }
-        }
     }
 }
