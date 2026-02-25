@@ -15,6 +15,7 @@ using osu.Game.Localisation;
 using osu.Game.Overlays;
 using osu.Game.Screens.Edit.Setup;
 using osuTK;
+using osuTK.Graphics;
 
 namespace osu.Game.Tests.Visual.UserInterface
 {
@@ -209,6 +210,16 @@ namespace osu.Game.Tests.Visual.UserInterface
                                             Caption = "No text in button",
                                             Action = () => { },
                                         },
+                                        new FormColourPicker
+                                        {
+                                            Caption = "Pick a colour, any colour!",
+                                            Current = new Bindable<Colour4>(Colour4.Green),
+                                        },
+                                        new FormColourPicker
+                                        {
+                                            Caption = "Pick a colour, any colour!",
+                                            Current = { Value = new Bindable<Colour4>(Colour4.Green).Value, Disabled = true },
+                                        }
                                     },
                                 },
                                 new FillFlowContainer
@@ -269,6 +280,16 @@ namespace osu.Game.Tests.Visual.UserInterface
                                                 Colour4.Blue,
                                                 Colour4.Yellow,
                                             }
+                                        },
+                                        new FormButton
+                                        {
+                                            Caption = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+                                            Action = () => { },
+                                        },
+                                        new FormColourPicker
+                                        {
+                                            Caption = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+                                            Current = new Bindable<Colour4>(Colour4.Green),
                                         },
                                     },
                                 }
