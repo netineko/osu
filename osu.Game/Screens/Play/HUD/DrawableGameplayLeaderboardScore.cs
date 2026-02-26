@@ -52,6 +52,7 @@ namespace osu.Game.Screens.Play.HUD
         private const double text_transition_duration = 200;
 
         public Bindable<bool> Expanded { get; } = new BindableBool();
+        public Bindable<bool> IsSheared { get; set; } = new BindableBool();
 
         public BindableLong TotalScore { get; } = new BindableLong();
         public BindableDouble Accuracy { get; } = new BindableDouble(1);
@@ -87,6 +88,7 @@ namespace osu.Game.Screens.Play.HUD
         private OsuSpriteText accuracyText = null!;
         private OsuSpriteText scoreText = null!;
         private OsuSpriteText comboText = null!;
+        private ScoreAvatar userAvatar = null!;
 
         private IBindable<ScoringMode> scoreDisplayMode = null!;
 
@@ -192,7 +194,7 @@ namespace osu.Game.Screens.Play.HUD
                             RelativeSizeAxes = Axes.Both,
                             CornerRadius = corner_radius,
                             Masking = true,
-                            Child = new ScoreAvatar(User)
+                            Child = userAvatar = new ScoreAvatar(User)
                             {
                                 Anchor = Anchor.Centre,
                                 Origin = Anchor.Centre,
@@ -317,6 +319,7 @@ namespace osu.Game.Screens.Play.HUD
 
             HasQuit.BindValueChanged(_ => updatePanelState());
             ScorePosition.BindValueChanged(_ => updatePanelState(), true);
+            IsSheared.BindValueChanged(_ => updatePanelState(), true);
 
             FinishTransforms(true);
         }
@@ -371,6 +374,16 @@ namespace osu.Game.Screens.Play.HUD
 
             scorePanel.MoveToX(widthExtension ? 0 : left_panel_extension_width, panel_transition_duration, Easing.OutElastic);
             leftLayer.ResizeWidthTo(widthExtension ? extended_left_panel_width : regular_left_panel_width, panel_transition_duration, Easing.OutElastic);
+
+            this.TransformTo(nameof(Shear), IsSheared.Value ? OsuGame.SHEAR : Vector2.Zero, 100, Easing.OutQuad);
+            positionText.TransformTo(nameof(Shear), IsSheared.Value ? -OsuGame.SHEAR : Vector2.Zero, 100, Easing.OutQuad);
+            userAvatar.TransformTo(nameof(Shear), IsSheared.Value ? -OsuGame.SHEAR : Vector2.Zero, 100, Easing.OutQuad);
+            userAvatar.TransformTo(nameof(Scale), IsSheared.Value ? new Vector2(1.1f) : Vector2.One, 100, Easing.OutQuad);
+            scoreComponents.TransformTo(nameof(Shear), IsSheared.Value ? -OsuGame.SHEAR : Vector2.Zero, 100, Easing.OutQuad);
+            scoreComponents.TransformTo(nameof(Padding), IsSheared.Value
+                ? new MarginPadding { Left = avatar_size / 2 + 4, Right = 20, Vertical = 5 }
+                : new MarginPadding { Left = avatar_size / 2 + 5, Right = 10, Vertical = 5 },
+            100, Easing.OutQuad);
         }
 
         private void setPanelColour(Color4 baseColour)

@@ -33,6 +33,9 @@ namespace osu.Game.Screens.Play.HUD
         [SettingSource(typeof(SkinnableComponentStrings), nameof(SkinnableComponentStrings.CollapseDuringGameplay), nameof(SkinnableComponentStrings.CollapseDuringGameplayDescription))]
         public Bindable<bool> CollapseDuringGameplay { get; } = new BindableBool(true);
 
+        [SettingSource(typeof(SkinnableComponentStrings), nameof(SkinnableComponentStrings.Sheared))]
+        public Bindable<bool> Sheared { get; } = new BindableBool(true);
+
         private readonly Bindable<bool> expanded = new BindableBool();
 
         [Resolved]
@@ -139,6 +142,7 @@ namespace osu.Game.Screens.Play.HUD
             Flow.Add(drawable);
             drawable.ScorePosition.BindValueChanged(_ => Scheduler.AddOnce(sort));
             drawable.DisplayOrder.BindValueChanged(_ => Scheduler.AddOnce(sort), true);
+            drawable.IsSheared = Sheared;
         }
 
         public void Clear()
