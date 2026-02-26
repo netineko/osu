@@ -6,8 +6,7 @@
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Sprites;
-using osu.Game.Graphics.Sprites;
+using osu.Game.Graphics.UserInterface;
 using osuTK;
 
 namespace osu.Game.Screens.Edit
@@ -34,12 +33,10 @@ namespace osu.Game.Screens.Edit
                     RelativeSizeAxes = Axes.X,
                     Height = header_height,
                     Padding = new MarginPadding { Horizontal = 20 },
-                    Child = new OsuSpriteText
+                    Child = new SectionHeader(HeaderText)
                     {
-                        Anchor = Anchor.CentreLeft,
-                        Origin = Anchor.CentreLeft,
-                        Text = HeaderText,
-                        Font = new FontUsage(size: 25, weight: "bold")
+                        Anchor = Anchor.BottomLeft,
+                        Origin = Anchor.BottomLeft,
                     }
                 },
                 new Container

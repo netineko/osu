@@ -5,8 +5,7 @@
 
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
-using osu.Framework.Graphics;
-using osu.Game.Overlays.Settings;
+using osu.Game.Graphics.UserInterfaceV2;
 using osu.Game.Rulesets.Edit.Checks.Components;
 
 namespace osu.Game.Screens.Edit.Verify
@@ -31,11 +30,9 @@ namespace osu.Game.Screens.Edit.Verify
 
             foreach (IssueType issueType in configurableIssueTypes)
             {
-                var checkbox = new SettingsCheckbox
+                var checkbox = new FormCheckBox
                 {
-                    Anchor = Anchor.CentreLeft,
-                    Origin = Anchor.CentreLeft,
-                    LabelText = issueType.ToString(),
+                    Caption = issueType.ToString(),
                     Current = { Default = !hiddenIssueTypes.Contains(issueType) }
                 };
 

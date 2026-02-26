@@ -2,9 +2,8 @@
 // See the LICENCE file in the repository root for full licence text.
 
 using osu.Framework.Allocation;
-using osu.Framework.Graphics;
 using osu.Game.Beatmaps;
-using osu.Game.Overlays.Settings;
+using osu.Game.Graphics.UserInterfaceV2;
 
 namespace osu.Game.Screens.Edit.Verify
 {
@@ -15,11 +14,10 @@ namespace osu.Game.Screens.Edit.Verify
         [BackgroundDependencyLoader]
         private void load(VerifyScreen verify)
         {
-            Flow.Add(new SettingsEnumDropdown<DifficultyRating>
+            Flow.Add(new FormEnumDropdown<DifficultyRating>
             {
-                Anchor = Anchor.CentreLeft,
-                Origin = Anchor.CentreLeft,
-                TooltipText = "Affects checks that depend on difficulty level",
+                Caption = "Interpretation",
+                HintText = "Affects checks that depend on difficulty level",
                 Current = verify.InterpretedDifficulty.GetBoundCopy()
             });
         }
