@@ -22,6 +22,7 @@ using osu.Game.Graphics.UserInterface;
 using osu.Game.Localisation;
 using osu.Game.Overlays;
 using osuTK.Input;
+using osu.Game.Graphics.UserInterfaceV2;
 
 namespace osu.Game.Screens.Edit.Components
 {
@@ -62,16 +63,22 @@ namespace osu.Game.Screens.Edit.Components
                     Direction = FillDirection.Vertical,
                     Children = new Drawable[]
                     {
-                        new OsuSpriteText
+                        new FormSliderBar<double>
                         {
-                            Text = EditorStrings.PlaybackSpeed,
-                        },
-                        new PlaybackTabControl
-                        {
-                            Current = tempoAdjustment,
                             RelativeSizeAxes = Axes.X,
-                            Height = 16,
-                        },
+                            Anchor = Anchor.CentreRight,
+                            Origin = Anchor.CentreRight,
+                            Scale = new Vector2(0.8f),
+                            Width = 1.25f,
+                            Caption = EditorStrings.PlaybackSpeed,
+                            Current = new BindableDouble(tempoAdjustment.Value)
+                            {
+                                MinValue = 0,
+                                MaxValue = 1,
+                                Precision = 0.05f,
+                            },
+                            DisplayAsPercentage = true,
+                        }
                     }
                 }
             };
