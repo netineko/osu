@@ -5,7 +5,9 @@ using System;
 using System.Linq;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Shapes;
 using osu.Framework.Input.Events;
 using osu.Framework.Localisation;
 using osu.Framework.Logging;
@@ -121,11 +123,14 @@ namespace osu.Game.Overlays.SkinEditor
             private readonly CompositeDrawable? dependencySource;
 
             private Container innerContainer = null!;
+            private Container background = null!;
+            private OsuSpriteText text = null!;
 
             private ScheduledDelegate? expandContractAction;
 
-            private const float contracted_size = 60;
-            private const float expanded_size = 120;
+            private const float contracted_size = 90;
+            private const float expanded_size = 150;
+            private const float text_height = 20;
 
             public ToolboxComponentButton(Drawable component, CompositeDrawable? dependencySource, IHasSkinDetails? detailedComponent = null)
             {
@@ -139,7 +144,7 @@ namespace osu.Game.Overlays.SkinEditor
                 Height = contracted_size;
             }
 
-            private const double animation_duration = 500;
+            private const double animation_duration = 400;
 
             protected override bool OnHover(HoverEvent e)
             {
@@ -147,6 +152,9 @@ namespace osu.Game.Overlays.SkinEditor
                 expandContractAction = Scheduler.AddDelayed(() =>
                 {
                     this.ResizeHeightTo(expanded_size, animation_duration, Easing.OutQuint);
+                    background.ResizeHeightTo(expanded_size - text_height * 1.5f, animation_duration, Easing.OutQuint);
+                    text.ScaleTo(1.1f, animation_duration, Easing.OutQuint);
+                    text.TransformTo(nameof(Margin), new MarginPadding(6), animation_duration, Easing.OutQuint);
                     Expanding?.Invoke(this);
                 }, 100);
 
@@ -160,7 +168,7 @@ namespace osu.Game.Overlays.SkinEditor
                 expandContractAction?.Cancel();
                 // If no other component is selected for too long, force a contract.
                 // Otherwise we will generally contract when Contract() is called from outside.
-                expandContractAction = Scheduler.AddDelayed(Contract, 1000);
+                expandContractAction = Scheduler.AddDelayed(Contract, 200);
             }
 
             public void Contract()
@@ -171,6 +179,9 @@ namespace osu.Game.Overlays.SkinEditor
                     return;
 
                 this.ResizeHeightTo(contracted_size, animation_duration, Easing.OutQuint);
+                background.ResizeHeightTo(contracted_size - text_height, animation_duration, Easing.OutQuint);
+                text.ScaleTo(0.9f, animation_duration, Easing.OutQuint);
+                text.TransformTo(nameof(Margin), new MarginPadding(4), animation_duration, Easing.OutQuint);
 
                 expandContractAction?.Cancel();
                 expandContractAction = null;
@@ -183,25 +194,43 @@ namespace osu.Game.Overlays.SkinEditor
 
                 AddRange(new Drawable[]
                 {
-                    new Container
+                    background = new Container
                     {
-                        RelativeSizeAxes = Axes.Both,
-                        Padding = new MarginPadding(10) { Bottom = 20 },
+                        RelativeSizeAxes = Axes.X,
+                        CornerRadius = 5,
                         Masking = true,
-                        Child = innerContainer = new DependencyBorrowingContainer(dependencySource)
+                        Height = Height - text_height,
+                        BorderThickness = 2,
+                        BorderColour = ColourInfo.GradientVertical(colourProvider.Background2, colourProvider.Background1),
+                        Children = new Drawable[]
                         {
-                            RelativeSizeAxes = Axes.Both,
-                            Anchor = Anchor.Centre,
-                            Origin = Anchor.Centre,
-                            Child = component
+                            new Box
+                            {
+                                RelativeSizeAxes = Axes.Both,
+                                Colour = colourProvider.Background2
+                            },
+                            new Container
+                            {
+                                RelativeSizeAxes = Axes.Both,
+                                Padding = new MarginPadding(10),
+                                Masking = true,
+                                Child = innerContainer = new DependencyBorrowingContainer(dependencySource)
+                                {
+                                    RelativeSizeAxes = Axes.Both,
+                                    Anchor = Anchor.Centre,
+                                    Origin = Anchor.Centre,
+                                    Child = component
+                                },
+                            },
                         },
                     },
-                    new OsuSpriteText
+                    text = new OsuSpriteText
                     {
                         Text = detailedComponent?.VisualName ?? component.GetType().Name,
                         Anchor = Anchor.BottomCentre,
                         Origin = Anchor.BottomCentre,
-                        Margin = new MarginPadding(5),
+                        Margin = new MarginPadding(4),
+                        Scale = new Vector2(0.9f),
                     },
                 });
 
