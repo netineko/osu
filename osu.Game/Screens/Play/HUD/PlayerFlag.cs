@@ -5,6 +5,8 @@ using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Localisation;
+using osu.Game.Localisation.SkinComponents;
 using osu.Game.Online.API;
 using osu.Game.Online.API.Requests.Responses;
 using osu.Game.Skinning;
@@ -13,8 +15,11 @@ using osuTK;
 
 namespace osu.Game.Screens.Play.HUD
 {
-    public partial class PlayerFlag : CompositeDrawable, ISerialisableDrawable
+    public partial class PlayerFlag : CompositeDrawable, ISerialisableDrawable, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.PlayerFlag;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.PlayerFlag;
+
         protected override bool ReceivePositionalInputAtSubTree(Vector2 screenSpacePos) => false;
 
         private readonly UpdateableFlag flag;

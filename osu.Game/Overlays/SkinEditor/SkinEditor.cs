@@ -36,6 +36,7 @@ using osu.Game.Skinning;
 using osu.Framework.Graphics.Cursor;
 using osu.Game.Input.Bindings;
 using osu.Game.Utils;
+using osu.Framework.Logging;
 
 namespace osu.Game.Overlays.SkinEditor
 {
@@ -539,8 +540,21 @@ namespace osu.Game.Overlays.SkinEditor
         {
             settingsSidebar.Clear();
 
+            IHasSkinDetails? detailedComponent = null;
+
             foreach (var component in SelectedComponents.OfType<Drawable>())
-                settingsSidebar.Add(new SkinSettingsToolbox(component));
+            {
+                try
+                {
+                    detailedComponent = (IHasSkinDetails)component;
+                }
+                catch (Exception e)
+                {
+                    Logger.Error(e, $"Skin component {component.GetType()} is missing the SkinComponent base class");
+                }
+
+                settingsSidebar.Add(new SkinSettingsToolbox(component, detailedComponent));
+            }
         }
 
         private IEnumerable<SkinnableContainer> availableTargets => targetScreen.ChildrenOfType<SkinnableContainer>();

@@ -5,6 +5,7 @@ using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Localisation;
 using osu.Game.Configuration;
 using osu.Game.Localisation.SkinComponents;
 using osu.Game.Online.API;
@@ -16,8 +17,11 @@ using osuTK;
 
 namespace osu.Game.Screens.Play.HUD
 {
-    public partial class PlayerAvatar : CompositeDrawable, ISerialisableDrawable
+    public partial class PlayerAvatar : CompositeDrawable, ISerialisableDrawable, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.PlayerAvatar;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.PlayerAvatar;
+
         [SettingSource(typeof(SkinnableComponentStrings), nameof(SkinnableComponentStrings.CornerRadius), nameof(SkinnableComponentStrings.CornerRadiusDescription),
             SettingControlType = typeof(SettingsPercentageSlider<float>))]
         public new BindableFloat CornerRadius { get; } = new BindableFloat(0.25f)

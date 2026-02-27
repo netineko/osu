@@ -10,11 +10,16 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using osuTK;
 using osuTK.Graphics;
+using osu.Framework.Localisation;
+using osu.Game.Localisation.SkinComponents;
 
 namespace osu.Game.Skinning
 {
-    public partial class LegacyKeyCounterDisplay : KeyCounterDisplay
+    public partial class LegacyKeyCounterDisplay : KeyCounterDisplay, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.LegacyKeyCounterDisplay;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.KeyCounter;
+
         private static readonly Colour4 active_colour_top = Colour4.FromHex(@"#ffde00");
         private static readonly Colour4 active_colour_bottom = Colour4.FromHex(@"#f8009e");
 

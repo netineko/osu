@@ -6,9 +6,11 @@ using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
+using osu.Framework.Localisation;
 using osu.Game.Audio;
 using osu.Game.Configuration;
 using osu.Game.Localisation;
+using osu.Game.Localisation.SkinComponents;
 using osu.Game.Overlays.SkinEditor;
 using osu.Game.Rulesets.Scoring;
 using osu.Game.Scoring;
@@ -16,8 +18,11 @@ using osuTK;
 
 namespace osu.Game.Skinning
 {
-    public partial class LegacyRankDisplay : CompositeDrawable, ISerialisableDrawable
+    public partial class LegacyRankDisplay : CompositeDrawable, ISerialisableDrawable, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.LegacyRankDisplay;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.RankDisplay;
+
         public bool UsesFixedAnchor { get; set; }
 
         [Resolved]

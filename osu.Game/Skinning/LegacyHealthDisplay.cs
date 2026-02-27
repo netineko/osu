@@ -10,7 +10,9 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
+using osu.Framework.Localisation;
 using osu.Framework.Utils;
+using osu.Game.Localisation.SkinComponents;
 using osu.Game.Screens.Play.HUD;
 using osu.Game.Utils;
 using osuTK;
@@ -18,8 +20,11 @@ using osuTK.Graphics;
 
 namespace osu.Game.Skinning
 {
-    public partial class LegacyHealthDisplay : HealthDisplay, ISerialisableDrawable
+    public partial class LegacyHealthDisplay : HealthDisplay, ISerialisableDrawable, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.LegacyHealthDisplay;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.HealthDisplay;
+
         private const double epic_cutoff = 0.5;
 
         private LegacyHealthPiece fill;

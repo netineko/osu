@@ -4,13 +4,17 @@
 using osu.Framework.Graphics;
 using osu.Framework.Localisation;
 using osu.Game.Graphics.Sprites;
+using osu.Game.Localisation.SkinComponents;
 using osu.Game.Screens.Play.HUD;
 using osuTK;
 
 namespace osu.Game.Skinning
 {
-    public partial class LegacyPerformancePointsCounter : PerformancePointsCounter, ISerialisableDrawable
+    public partial class LegacyPerformancePointsCounter : PerformancePointsCounter, ISerialisableDrawable, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.LegacyPerformancePointsCounter;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.PerformancePointsCounter;
+
         protected override double RollingDuration => 1000;
         protected override Easing RollingEasing => Easing.Out;
 

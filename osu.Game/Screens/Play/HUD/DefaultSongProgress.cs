@@ -6,18 +6,23 @@ using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Localisation;
 using osu.Framework.Utils;
 using osu.Game.Configuration;
 using osu.Game.Graphics;
 using osu.Game.Localisation.HUD;
 using osu.Game.Localisation.SkinComponents;
 using osu.Game.Rulesets.Objects;
+using osu.Game.Skinning;
 using osuTK;
 
 namespace osu.Game.Screens.Play.HUD
 {
-    public partial class DefaultSongProgress : SongProgress
+    public partial class DefaultSongProgress : SongProgress, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.DefaultSongProgress;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.SongProgressBar;
+
         private const float bottom_bar_height = 5;
         private const float graph_height = SquareGraph.Column.WIDTH * 6;
         private const float handle_height = 18;

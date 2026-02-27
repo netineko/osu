@@ -18,15 +18,20 @@ using osu.Game.Graphics;
 using osu.Game.Graphics.Containers;
 using osu.Game.Graphics.Sprites;
 using osu.Game.Localisation.HUD;
+using osu.Game.Localisation.SkinComponents;
 using osu.Game.Rulesets.Judgements;
 using osu.Game.Rulesets.Scoring;
+using osu.Game.Skinning;
 using osuTK;
 
 namespace osu.Game.Screens.Play.HUD.HitErrorMeters
 {
     [Cached]
-    public partial class BarHitErrorMeter : HitErrorMeter
+    public partial class BarHitErrorMeter : HitErrorMeter, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.BarHitErrorMeter;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.HitErrorMeter;
+
         [SettingSource(typeof(BarHitErrorMeterStrings), nameof(BarHitErrorMeterStrings.JudgementLineThickness), nameof(BarHitErrorMeterStrings.JudgementLineThicknessDescription))]
         public BindableNumber<float> JudgementLineThickness { get; } = new BindableNumber<float>(4)
         {

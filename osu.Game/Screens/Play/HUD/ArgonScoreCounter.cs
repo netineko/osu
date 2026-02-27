@@ -14,8 +14,11 @@ using osu.Game.Skinning;
 
 namespace osu.Game.Screens.Play.HUD
 {
-    public partial class ArgonScoreCounter : GameplayScoreCounter, ISerialisableDrawable
+    public partial class ArgonScoreCounter : GameplayScoreCounter, ISerialisableDrawable, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.ArgonScoreCounter;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.ScoreCounter;
+
         private ArgonScoreTextComponent scoreText = null!;
 
         protected override double RollingDuration => 250;

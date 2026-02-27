@@ -7,6 +7,8 @@ using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Localisation;
+using osu.Game.Localisation.SkinComponents;
 using osu.Game.Rulesets.Scoring;
 using osu.Game.Rulesets.UI.Scrolling;
 using osu.Game.Skinning;
@@ -15,8 +17,11 @@ using osuTK.Graphics;
 
 namespace osu.Game.Rulesets.Mania.Skinning.Legacy
 {
-    public partial class LegacyManiaComboCounter : CompositeDrawable, ISerialisableDrawable
+    public partial class LegacyManiaComboCounter : CompositeDrawable, ISerialisableDrawable, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.LegacyManiaComboCounter;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.ComboCounter;
+
         public bool UsesFixedAnchor { get; set; }
 
         public Bindable<int> Current { get; } = new BindableInt { MinValue = 0 };

@@ -3,13 +3,18 @@
 
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
+using osu.Framework.Localisation;
 using osu.Game.Graphics;
+using osu.Game.Localisation.SkinComponents;
 using osu.Game.Skinning;
 
 namespace osu.Game.Screens.Play.HUD
 {
-    public partial class DefaultScoreCounter : GameplayScoreCounter, ISerialisableDrawable
+    public partial class DefaultScoreCounter : GameplayScoreCounter, ISerialisableDrawable, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.DefaultScoreCounter;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.ScoreCounter;
+
         public DefaultScoreCounter()
         {
             Anchor = Anchor.TopCentre;

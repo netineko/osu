@@ -8,13 +8,18 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Localisation;
 using osu.Game.Graphics;
 using osu.Game.Graphics.Sprites;
+using osu.Game.Localisation.SkinComponents;
 using osu.Game.Rulesets.Scoring;
+using osu.Game.Skinning;
 using osuTK;
 
 namespace osu.Game.Screens.Play.HUD
 {
-    public partial class LongestComboCounter : ComboCounter
+    public partial class LongestComboCounter : ComboCounter, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.LongestComboCounter;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.LongestComboCounter;
+
         [BackgroundDependencyLoader]
         private void load(OsuColour colours, ScoreProcessor scoreProcessor)
         {

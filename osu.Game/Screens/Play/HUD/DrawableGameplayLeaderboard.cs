@@ -9,6 +9,7 @@ using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Localisation;
 using osu.Game.Configuration;
 using osu.Game.Graphics.Containers;
 using osu.Game.Localisation.SkinComponents;
@@ -19,8 +20,11 @@ using osuTK.Graphics;
 
 namespace osu.Game.Screens.Play.HUD
 {
-    public partial class DrawableGameplayLeaderboard : CompositeDrawable, ISerialisableDrawable
+    public partial class DrawableGameplayLeaderboard : CompositeDrawable, ISerialisableDrawable, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.DrawableGameplayLeaderboard;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.Leaderboard;
+
         protected readonly FillFlowContainer<DrawableGameplayLeaderboardScore> Flow;
 
         private bool requiresScroll;

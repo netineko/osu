@@ -5,13 +5,19 @@ using System;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
+using osu.Framework.Localisation;
+using osu.Game.Localisation.SkinComponents;
 using osu.Game.Rulesets.UI.Scrolling;
 using osu.Game.Screens.Play.HUD;
+using osu.Game.Skinning;
 
 namespace osu.Game.Rulesets.Mania.Skinning.Argon
 {
-    public partial class ArgonManiaComboCounter : ArgonComboCounter
+    public partial class ArgonManiaComboCounter : ArgonComboCounter, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.ArgonManiaComboCounter;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.ComboCounter;
+
         protected override bool DisplayXSymbol => false;
 
         [Resolved]

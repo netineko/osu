@@ -10,6 +10,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
+using osu.Framework.Localisation;
 using osu.Game.Configuration;
 using osu.Game.Graphics.Sprites;
 using osu.Game.Localisation.SkinComponents;
@@ -22,8 +23,11 @@ namespace osu.Game.Skinning
     /// <summary>
     /// A skinnable element which uses a single texture backing.
     /// </summary>
-    public partial class SkinnableSprite : SkinnableDrawable, ISerialisableDrawable
+    public partial class SkinnableSprite : SkinnableDrawable, ISerialisableDrawable, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.SkinnableSprite;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.SkinnableSprite;
+
         protected override bool ApplySizeRestrictionsToDefault => true;
 
         [Resolved]

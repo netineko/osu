@@ -4,12 +4,18 @@
 using System.Linq;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Localisation;
+using osu.Game.Localisation.SkinComponents;
+using osu.Game.Skinning;
 using osuTK.Graphics;
 
 namespace osu.Game.Screens.Play.HUD
 {
-    public partial class DefaultKeyCounterDisplay : KeyCounterDisplay
+    public partial class DefaultKeyCounterDisplay : KeyCounterDisplay, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.DefaultKeyCounterDisplay;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.KeyCounter;
+
         private const double key_fade_time = 80;
 
         protected override FillFlowContainer<KeyCounter> KeyFlow { get; }

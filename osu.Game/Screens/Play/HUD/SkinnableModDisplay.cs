@@ -6,6 +6,7 @@ using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Localisation;
 using osu.Game.Configuration;
 using osu.Game.Localisation.SkinComponents;
 using osu.Game.Rulesets.Mods;
@@ -17,8 +18,11 @@ namespace osu.Game.Screens.Play.HUD
     /// <summary>
     /// Displays a single-line horizontal auto-sized flow of mods. For cases where wrapping is required, use <see cref="ModFlowDisplay"/> instead.
     /// </summary>
-    public partial class SkinnableModDisplay : CompositeDrawable, ISerialisableDrawable
+    public partial class SkinnableModDisplay : CompositeDrawable, ISerialisableDrawable, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.SkinnableModDisplay;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.ModDisplay;
+
         private ModDisplay modDisplay = null!;
 
         [Resolved]

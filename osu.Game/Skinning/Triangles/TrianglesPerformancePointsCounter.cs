@@ -8,14 +8,18 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Localisation;
 using osu.Game.Graphics;
 using osu.Game.Graphics.Sprites;
+using osu.Game.Localisation.SkinComponents;
 using osu.Game.Resources.Localisation.Web;
 using osu.Game.Screens.Play.HUD;
 using osuTK;
 
 namespace osu.Game.Skinning.Triangles
 {
-    public partial class TrianglesPerformancePointsCounter : PerformancePointsCounter, ISerialisableDrawable
+    public partial class TrianglesPerformancePointsCounter : PerformancePointsCounter, ISerialisableDrawable, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.TrianglesPerformancePointsCounter;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.PerformancePointsCounter;
+
         protected override bool IsRollingProportional => true;
 
         protected override double RollingDuration => 500;

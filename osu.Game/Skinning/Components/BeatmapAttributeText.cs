@@ -26,8 +26,11 @@ using osu.Game.Utils;
 namespace osu.Game.Skinning.Components
 {
     [UsedImplicitly]
-    public partial class BeatmapAttributeText : FontAdjustableSkinComponent
+    public partial class BeatmapAttributeText : FontAdjustableSkinComponent, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.BeatmapAttributeText;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.BeatmapAttributeText;
+
         [SettingSource(typeof(BeatmapAttributeTextStrings), nameof(BeatmapAttributeTextStrings.Attribute))]
         public Bindable<BeatmapAttribute> Attribute { get; } = new Bindable<BeatmapAttribute>(BeatmapAttribute.StarRating);
 

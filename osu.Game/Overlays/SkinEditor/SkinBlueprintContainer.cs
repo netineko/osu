@@ -1,6 +1,7 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
 // See the LICENCE file in the repository root for full licence text.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
@@ -8,6 +9,7 @@ using System.Linq;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Input.Events;
+using osu.Framework.Logging;
 using osu.Game.Rulesets.Edit;
 using osu.Game.Screens.Edit.Compose.Components;
 using osu.Game.Skinning;
@@ -141,7 +143,19 @@ namespace osu.Game.Overlays.SkinEditor
         protected override SelectionHandler<ISerialisableDrawable> CreateSelectionHandler() => new SkinSelectionHandler();
 
         protected override SelectionBlueprint<ISerialisableDrawable> CreateBlueprintFor(ISerialisableDrawable component)
-            => new SkinBlueprint(component);
+        {
+            IHasSkinDetails? detailedComponent = null;
+            try
+            {
+                detailedComponent = (IHasSkinDetails)component;
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, $"Skin component {component.GetType()} is missing the SkinComponent base class");
+            }
+
+            return new SkinBlueprint(component, detailedComponent);
+        }
 
         protected override void Dispose(bool isDisposing)
         {

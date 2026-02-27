@@ -6,6 +6,8 @@ using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
+using osu.Framework.Localisation;
+using osu.Game.Localisation.SkinComponents;
 using osu.Game.Rulesets.Scoring;
 using osuTK;
 
@@ -14,8 +16,11 @@ namespace osu.Game.Skinning
     /// <summary>
     /// Uses the 'x' symbol and has a pop-out effect while rolling over.
     /// </summary>
-    public partial class LegacyDefaultComboCounter : CompositeDrawable, ISerialisableDrawable
+    public partial class LegacyDefaultComboCounter : CompositeDrawable, ISerialisableDrawable, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.LegacyDefaultComboCounter;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.ComboCounter;
+
         public Bindable<int> Current { get; } = new BindableInt { MinValue = 0 };
 
         private uint scheduledPopOutCurrentId;

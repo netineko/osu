@@ -8,6 +8,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
+using osu.Framework.Localisation;
 using osu.Game.Configuration;
 using osu.Game.Localisation.SkinComponents;
 using osu.Game.Skinning;
@@ -15,8 +16,11 @@ using osuTK;
 
 namespace osu.Game.Screens.Play.HUD
 {
-    public partial class ArgonWedgePiece : CompositeDrawable, ISerialisableDrawable
+    public partial class ArgonWedgePiece : CompositeDrawable, ISerialisableDrawable, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.ArgonWedgePiece;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.ArgonWedgePiece;
+
         public bool UsesFixedAnchor { get; set; }
 
         [SettingSource("Inverted shear")]

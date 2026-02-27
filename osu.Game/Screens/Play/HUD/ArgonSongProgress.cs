@@ -6,16 +6,21 @@ using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Localisation;
 using osu.Game.Configuration;
 using osu.Game.Graphics;
 using osu.Game.Localisation.HUD;
 using osu.Game.Localisation.SkinComponents;
 using osu.Game.Rulesets.Objects;
+using osu.Game.Skinning;
 
 namespace osu.Game.Screens.Play.HUD
 {
-    public partial class ArgonSongProgress : SongProgress
+    public partial class ArgonSongProgress : SongProgress, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.ArgonSongProgress;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.SongProgressBar;
+
         private readonly SongProgressInfo info;
         private readonly ArgonSongProgressGraph graph;
         private readonly ArgonSongProgressBar bar;

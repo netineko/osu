@@ -2,14 +2,19 @@
 // See the LICENCE file in the repository root for full licence text.
 
 using osu.Framework.Graphics;
+using osu.Framework.Localisation;
 using osu.Game.Graphics.Sprites;
+using osu.Game.Localisation.SkinComponents;
 using osu.Game.Screens.Play.HUD;
 using osuTK;
 
 namespace osu.Game.Skinning
 {
-    public partial class LegacyScoreCounter : GameplayScoreCounter, ISerialisableDrawable
+    public partial class LegacyScoreCounter : GameplayScoreCounter, ISerialisableDrawable, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.LegacyScoreCounter;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.ScoreCounter;
+
         protected override double RollingDuration => 1000;
         protected override Easing RollingEasing => Easing.Out;
 

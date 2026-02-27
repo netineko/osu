@@ -10,6 +10,7 @@ using osu.Game.Localisation;
 using osu.Game.Overlays.Settings;
 using osu.Game.Screens.Edit;
 using osu.Game.Screens.Edit.Components;
+using osu.Game.Skinning;
 using osuTK;
 
 namespace osu.Game.Overlays.SkinEditor
@@ -23,10 +24,13 @@ namespace osu.Game.Overlays.SkinEditor
 
         private readonly Drawable component;
 
-        public SkinSettingsToolbox(Drawable component)
-            : base(SkinEditorStrings.Settings(component.GetType().Name))
+        private readonly IHasSkinDetails? detailedComponent = null;
+
+        public SkinSettingsToolbox(Drawable component, IHasSkinDetails? detailedComponent)
+            : base(SkinEditorStrings.Settings(detailedComponent?.VisualName.ToString() ?? component.GetType().Name))
         {
             this.component = component;
+            this.detailedComponent = detailedComponent;
 
             base.Content.Add(Content = new FillFlowContainer
             {

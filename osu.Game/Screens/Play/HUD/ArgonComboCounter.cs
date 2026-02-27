@@ -12,13 +12,17 @@ using osu.Game.Configuration;
 using osu.Game.Localisation.SkinComponents;
 using osu.Game.Resources.Localisation.Web;
 using osu.Game.Rulesets.Scoring;
+using osu.Game.Skinning;
 using osuTK;
 using osuTK.Graphics;
 
 namespace osu.Game.Screens.Play.HUD
 {
-    public partial class ArgonComboCounter : ComboCounter
+    public partial class ArgonComboCounter : ComboCounter, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.ArgonComboCounter;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.ComboCounter;
+
         protected ArgonCounterTextComponent Text = null!;
 
         protected override double RollingDuration => 250;

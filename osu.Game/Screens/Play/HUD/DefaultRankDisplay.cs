@@ -14,11 +14,16 @@ using osu.Game.Scoring;
 using osu.Game.Skinning;
 using osuTK;
 using osu.Game.Localisation;
+using osu.Game.Localisation.SkinComponents;
+using osu.Framework.Localisation;
 
 namespace osu.Game.Screens.Play.HUD
 {
-    public partial class DefaultRankDisplay : CompositeDrawable, ISerialisableDrawable
+    public partial class DefaultRankDisplay : CompositeDrawable, ISerialisableDrawable, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.DefaultRankDisplay;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.RankDisplay;
+
         public bool UsesFixedAnchor { get; set; }
 
         [Resolved]

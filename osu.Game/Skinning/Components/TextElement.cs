@@ -5,6 +5,7 @@ using JetBrains.Annotations;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Sprites;
+using osu.Framework.Localisation;
 using osu.Game.Configuration;
 using osu.Game.Graphics;
 using osu.Game.Graphics.Sprites;
@@ -13,8 +14,11 @@ using osu.Game.Localisation.SkinComponents;
 namespace osu.Game.Skinning.Components
 {
     [UsedImplicitly]
-    public partial class TextElement : FontAdjustableSkinComponent
+    public partial class TextElement : FontAdjustableSkinComponent, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.TextElement;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.TextElement;
+
         [SettingSource(typeof(SkinnableComponentStrings), nameof(SkinnableComponentStrings.TextElementText))]
         public Bindable<string> Text { get; } = new Bindable<string>("Circles!");
 

@@ -8,13 +8,17 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Localisation;
 using osu.Game.Graphics;
 using osu.Game.Graphics.Sprites;
+using osu.Game.Localisation.SkinComponents;
 using osu.Game.Screens.Play.HUD;
 using osuTK;
 
 namespace osu.Game.Skinning.Triangles
 {
-    public partial class TrianglesUnstableRateCounter : UnstableRateCounter, ISerialisableDrawable
+    public partial class TrianglesUnstableRateCounter : UnstableRateCounter, ISerialisableDrawable, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.TrianglesUnstableRateCounter;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.UnstableRateCounter;
+
         private const float alpha_when_invalid = 0.3f;
 
         [BackgroundDependencyLoader]

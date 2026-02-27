@@ -3,13 +3,19 @@
 
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Localisation;
+using osu.Game.Localisation.SkinComponents;
 using osu.Game.Screens.Play.HUD;
+using osu.Game.Skinning;
 using osuTK;
 
 namespace osu.Game.Screens.Play
 {
-    public partial class ArgonKeyCounterDisplay : KeyCounterDisplay
+    public partial class ArgonKeyCounterDisplay : KeyCounterDisplay, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.ArgonKeyCounter;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.KeyCounter;
+
         protected override FillFlowContainer<KeyCounter> KeyFlow { get; }
 
         public ArgonKeyCounterDisplay()

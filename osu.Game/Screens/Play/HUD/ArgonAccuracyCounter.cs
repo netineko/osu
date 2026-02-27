@@ -15,8 +15,11 @@ using osuTK;
 
 namespace osu.Game.Screens.Play.HUD
 {
-    public partial class ArgonAccuracyCounter : GameplayAccuracyCounter, ISerialisableDrawable
+    public partial class ArgonAccuracyCounter : GameplayAccuracyCounter, ISerialisableDrawable, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.ArgonAccuracyCounter;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.AccuracyCounter;
+
         protected override double RollingDuration => 250;
 
         [SettingSource("Wireframe opacity", "Controls the opacity of the wireframes behind the digits.")]

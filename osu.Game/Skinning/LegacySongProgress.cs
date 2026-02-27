@@ -6,13 +6,18 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.UserInterface;
+using osu.Framework.Localisation;
+using osu.Game.Localisation.SkinComponents;
 using osu.Game.Screens.Play.HUD;
 using osuTK;
 
 namespace osu.Game.Skinning
 {
-    public partial class LegacySongProgress : SongProgress
+    public partial class LegacySongProgress : SongProgress, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.LegacySongProgress;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.SongProgressPie;
+
         private CircularProgress circularProgress = null!;
 
         // Legacy song progress doesn't support interaction for now.

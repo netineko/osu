@@ -12,15 +12,20 @@ using osu.Framework.Graphics.Shapes;
 using osu.Framework.Localisation;
 using osu.Game.Configuration;
 using osu.Game.Localisation.HUD;
+using osu.Game.Localisation.SkinComponents;
 using osu.Game.Rulesets.Judgements;
 using osu.Game.Rulesets.Scoring;
+using osu.Game.Skinning;
 using osuTK;
 
 namespace osu.Game.Screens.Play.HUD.HitErrorMeters
 {
     [Cached]
-    public partial class ColourHitErrorMeter : HitErrorMeter
+    public partial class ColourHitErrorMeter : HitErrorMeter, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.ColourHitErrorMeter;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.HitErrorMeter;
+
         private const int animation_duration = 200;
         private const int drawable_judgement_size = 8;
 

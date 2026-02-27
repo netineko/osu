@@ -6,10 +6,12 @@ using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
+using osu.Framework.Localisation;
 using osu.Game.Configuration;
 using osu.Game.Graphics;
 using osu.Game.Graphics.Containers;
 using osu.Game.Graphics.Sprites;
+using osu.Game.Localisation.SkinComponents;
 using osuTK;
 using osuTK.Graphics;
 
@@ -19,8 +21,11 @@ namespace osu.Game.Skinning.Components
     /// Intended to be a test bed for skinning. May be removed at some point in the future.
     /// </summary>
     [UsedImplicitly]
-    public partial class BigBlackBox : CompositeDrawable, ISerialisableDrawable
+    public partial class BigBlackBox : CompositeDrawable, ISerialisableDrawable, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.BigBlackBox;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.BigBlackBox;
+
         public bool UsesFixedAnchor { get; set; }
 
         [SettingSource("Spinning text", "Whether the big text should spin")]

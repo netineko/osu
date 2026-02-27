@@ -10,6 +10,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Layout;
+using osu.Framework.Localisation;
 using osu.Framework.Threading;
 using osu.Framework.Utils;
 using osu.Game.Configuration;
@@ -22,8 +23,11 @@ using osuTK.Graphics;
 
 namespace osu.Game.Screens.Play.HUD
 {
-    public partial class ArgonHealthDisplay : HealthDisplay, ISerialisableDrawable
+    public partial class ArgonHealthDisplay : HealthDisplay, ISerialisableDrawable, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.ArgonHealthDisplay;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.HealthDisplay;
+
         public bool UsesFixedAnchor { get; set; }
 
         [SettingSource("Bar height")]

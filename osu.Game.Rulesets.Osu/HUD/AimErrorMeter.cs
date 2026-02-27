@@ -15,6 +15,7 @@ using osu.Game.Configuration;
 using osu.Game.Graphics;
 using osu.Game.Graphics.Containers;
 using osu.Game.Localisation.HUD;
+using osu.Game.Localisation.SkinComponents;
 using osu.Game.Rulesets.Judgements;
 using osu.Game.Rulesets.Mods;
 using osu.Game.Rulesets.Objects.Legacy;
@@ -23,6 +24,7 @@ using osu.Game.Rulesets.Osu.Objects;
 using osu.Game.Rulesets.Osu.Statistics;
 using osu.Game.Rulesets.Scoring;
 using osu.Game.Screens.Play.HUD.HitErrorMeters;
+using osu.Game.Skinning;
 using osuTK;
 using osuTK.Graphics;
 using Container = osu.Framework.Graphics.Containers.Container;
@@ -30,8 +32,11 @@ using Container = osu.Framework.Graphics.Containers.Container;
 namespace osu.Game.Rulesets.Osu.HUD
 {
     [Cached]
-    public partial class AimErrorMeter : HitErrorMeter
+    public partial class AimErrorMeter : HitErrorMeter, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.AimErrorMeter;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.AimErrorMeter;
+
         [SettingSource(typeof(AimErrorMeterStrings), nameof(AimErrorMeterStrings.HitMarkerSize), nameof(AimErrorMeterStrings.HitMarkerSizeDescription))]
         public BindableNumber<float> HitMarkerSize { get; } = new BindableNumber<float>(7f)
         {

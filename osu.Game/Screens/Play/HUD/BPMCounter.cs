@@ -11,13 +11,17 @@ using osu.Game.Beatmaps;
 using osu.Game.Graphics;
 using osu.Game.Graphics.Sprites;
 using osu.Game.Graphics.UserInterface;
+using osu.Game.Localisation.SkinComponents;
 using osu.Game.Skinning;
 using osuTK;
 
 namespace osu.Game.Screens.Play.HUD
 {
-    public partial class BPMCounter : RollingCounter<double>, ISerialisableDrawable
+    public partial class BPMCounter : RollingCounter<double>, ISerialisableDrawable, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.BPMCounter;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.BPMCounter;
+
         protected override double RollingDuration => 375;
 
         [Resolved]

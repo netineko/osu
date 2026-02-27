@@ -6,6 +6,7 @@ using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
+using osu.Framework.Localisation;
 using osu.Game.Configuration;
 using osu.Game.Localisation.SkinComponents;
 using osu.Game.Overlays.Settings;
@@ -14,8 +15,11 @@ using osuTK.Graphics;
 
 namespace osu.Game.Skinning.Components
 {
-    public partial class BoxElement : CompositeDrawable, ISerialisableDrawable
+    public partial class BoxElement : CompositeDrawable, ISerialisableDrawable, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.BoxElement;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.BoxElement;
+
         public bool UsesFixedAnchor { get; set; }
 
         [SettingSource(typeof(SkinnableComponentStrings), nameof(SkinnableComponentStrings.CornerRadius), nameof(SkinnableComponentStrings.CornerRadiusDescription),

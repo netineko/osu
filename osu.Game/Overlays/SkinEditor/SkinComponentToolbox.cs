@@ -73,7 +73,17 @@ namespace osu.Game.Overlays.SkinEditor
 
                 if (!((ISerialisableDrawable)instance).IsEditable) return;
 
-                fill.Add(new ToolboxComponentButton(instance, target)
+                IHasSkinDetails? detailedComponent = null;
+                try
+                {
+                    detailedComponent = (IHasSkinDetails)instance;
+                }
+                catch (Exception e)
+                {
+                    Logger.Error(e, $"Skin component {type} is missing the SkinComponent base class");
+                }
+
+                fill.Add(new ToolboxComponentButton(instance, target, detailedComponent)
                 {
                     RequestPlacement = t => RequestPlacement?.Invoke(t),
                     Expanding = contractOtherButtons,
@@ -107,6 +117,7 @@ namespace osu.Game.Overlays.SkinEditor
             public Action<ToolboxComponentButton>? Expanding;
 
             private readonly Drawable component;
+            private readonly IHasSkinDetails? detailedComponent;
             private readonly CompositeDrawable? dependencySource;
 
             private Container innerContainer = null!;
@@ -116,9 +127,10 @@ namespace osu.Game.Overlays.SkinEditor
             private const float contracted_size = 60;
             private const float expanded_size = 120;
 
-            public ToolboxComponentButton(Drawable component, CompositeDrawable? dependencySource)
+            public ToolboxComponentButton(Drawable component, CompositeDrawable? dependencySource, IHasSkinDetails? detailedComponent = null)
             {
                 this.component = component;
+                this.detailedComponent = detailedComponent;
                 this.dependencySource = dependencySource;
 
                 Enabled.Value = true;
@@ -186,7 +198,7 @@ namespace osu.Game.Overlays.SkinEditor
                     },
                     new OsuSpriteText
                     {
-                        Text = component.GetType().Name,
+                        Text = detailedComponent?.VisualName ?? component.GetType().Name,
                         Anchor = Anchor.BottomCentre,
                         Origin = Anchor.BottomCentre,
                         Margin = new MarginPadding(5),

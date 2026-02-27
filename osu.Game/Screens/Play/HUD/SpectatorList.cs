@@ -12,9 +12,11 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Pooling;
+using osu.Framework.Localisation;
 using osu.Game.Graphics;
 using osu.Game.Graphics.Sprites;
 using osu.Game.Localisation.HUD;
+using osu.Game.Localisation.SkinComponents;
 using osu.Game.Online.Chat;
 using osu.Game.Online.Multiplayer;
 using osu.Game.Online.Spectator;
@@ -24,8 +26,11 @@ using osuTK.Graphics;
 
 namespace osu.Game.Screens.Play.HUD
 {
-    public partial class SpectatorList : CompositeDrawable, ISerialisableDrawable
+    public partial class SpectatorList : CompositeDrawable, ISerialisableDrawable, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.SpectatorList;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.SpectatorList;
+
         private const int max_spectators_displayed = 10;
 
         public Bindable<Typeface> HeaderFont { get; } = new Bindable<Typeface>(Typeface.Torus);

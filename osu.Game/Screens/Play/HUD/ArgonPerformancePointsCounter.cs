@@ -6,6 +6,7 @@ using osu.Framework.Bindables;
 using osu.Framework.Extensions.LocalisationExtensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Sprites;
+using osu.Framework.Localisation;
 using osu.Game.Configuration;
 using osu.Game.Localisation.SkinComponents;
 using osu.Game.Resources.Localisation.Web;
@@ -13,8 +14,11 @@ using osu.Game.Skinning;
 
 namespace osu.Game.Screens.Play.HUD
 {
-    public partial class ArgonPerformancePointsCounter : PerformancePointsCounter, ISerialisableDrawable
+    public partial class ArgonPerformancePointsCounter : PerformancePointsCounter, ISerialisableDrawable, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.ArgonPerformancePointsCounter;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.PerformancePointsCounter;
+
         private ArgonCounterTextComponent text = null!;
 
         protected override double RollingDuration => 250;

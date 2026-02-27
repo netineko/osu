@@ -31,6 +31,8 @@ namespace osu.Game.Overlays.SkinEditor
 
         private Drawable drawable => (Drawable)Item;
 
+        private IHasSkinDetails? detailedComponent = null;
+
         protected override bool ShouldBeAlive => drawable.IsAlive && Item.IsPresent;
 
         private Quad drawableQuad;
@@ -47,9 +49,10 @@ namespace osu.Game.Overlays.SkinEditor
         protected override bool ReceivePositionalInputAtSubTree(Vector2 screenSpacePos) =>
             drawableQuad.Contains(screenSpacePos);
 
-        public SkinBlueprint(ISerialisableDrawable component)
+        public SkinBlueprint(ISerialisableDrawable component, IHasSkinDetails? detailedComponent)
             : base(component)
         {
+            this.detailedComponent = detailedComponent;
         }
 
         [BackgroundDependencyLoader]
@@ -82,7 +85,7 @@ namespace osu.Game.Overlays.SkinEditor
                         },
                         label = new OsuSpriteText
                         {
-                            Text = Item.GetType().Name,
+                            Text = detailedComponent?.ShortName ?? Item.GetType().Name,
                             Font = OsuFont.Default.With(size: 10, weight: FontWeight.Bold),
                             Alpha = 0,
                             Anchor = Anchor.BottomRight,

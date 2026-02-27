@@ -6,7 +6,9 @@ using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Sprites;
+using osu.Framework.Localisation;
 using osu.Game.Graphics.Sprites;
+using osu.Game.Localisation.SkinComponents;
 using osu.Game.Online.API;
 using osu.Game.Online.API.Requests.Responses;
 using osu.Game.Screens.Play;
@@ -14,8 +16,11 @@ using osu.Game.Screens.Play;
 namespace osu.Game.Skinning.Components
 {
     [UsedImplicitly]
-    public partial class PlayerName : FontAdjustableSkinComponent
+    public partial class PlayerName : FontAdjustableSkinComponent, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.PlayerName;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.PlayerName;
+
         private readonly OsuSpriteText text;
 
         [Resolved]

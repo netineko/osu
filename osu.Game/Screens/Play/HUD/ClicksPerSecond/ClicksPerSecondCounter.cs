@@ -9,13 +9,17 @@ using osu.Framework.Localisation;
 using osu.Game.Graphics;
 using osu.Game.Graphics.Sprites;
 using osu.Game.Graphics.UserInterface;
+using osu.Game.Localisation.SkinComponents;
 using osu.Game.Skinning;
 using osuTK;
 
 namespace osu.Game.Screens.Play.HUD.ClicksPerSecond
 {
-    public partial class ClicksPerSecondCounter : RollingCounter<int>, ISerialisableDrawable
+    public partial class ClicksPerSecondCounter : RollingCounter<int>, ISerialisableDrawable, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.ClicksPerSecondCounter;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.ClicksPerSecondCounter;
+
         [Resolved]
         private ClicksPerSecondController controller { get; set; } = null!;
 

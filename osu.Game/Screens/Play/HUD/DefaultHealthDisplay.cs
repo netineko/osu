@@ -13,11 +13,16 @@ using osuTK.Graphics;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Utils;
 using osu.Game.Skinning;
+using osu.Framework.Localisation;
+using osu.Game.Localisation.SkinComponents;
 
 namespace osu.Game.Screens.Play.HUD
 {
-    public partial class DefaultHealthDisplay : HealthDisplay, IHasAccentColour, ISerialisableDrawable
+    public partial class DefaultHealthDisplay : HealthDisplay, IHasAccentColour, ISerialisableDrawable, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.DefaultHealthDisplay;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.HealthDisplay;
+
         /// <summary>
         /// The base opacity of the glow.
         /// </summary>

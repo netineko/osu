@@ -19,8 +19,11 @@ using osuTK;
 namespace osu.Game.Skinning.Components
 {
     [UsedImplicitly]
-    public partial class ArgonJudgementCounterDisplay : CompositeDrawable, ISerialisableDrawable
+    public partial class ArgonJudgementCounterDisplay : CompositeDrawable, ISerialisableDrawable, IHasSkinDetails
     {
+        LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.ArgonJudgementCounter;
+        LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.JudgementCounter;
+
         [Resolved]
         private JudgementCountController judgementCountController { get; set; } = null!;
 
