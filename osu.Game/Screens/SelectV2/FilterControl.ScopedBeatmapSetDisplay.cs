@@ -80,6 +80,7 @@ namespace osu.Game.Screens.SelectV2
                                 Text = CommonStrings.Back,
                                 RelativeSizeAxes = Axes.Y,
                                 Height = 1,
+                                Margin = new MarginPadding { Right = 2 },
                                 Action = () => Action?.Invoke(),
                             }
                         }
@@ -111,11 +112,13 @@ namespace osu.Game.Screens.SelectV2
                     text.AddText(SongSelectStrings.TemporarilyShowingAllBeatmapsIn);
                     text.AddText(@" ");
                     text.AddText(ScopedBeatmapSet.Value.Metadata.GetDisplayTitleRomanisable(), t => t.Font = OsuFont.Style.Body.With(weight: FontWeight.Bold));
+                    this.TransformTo(nameof(Margin), new MarginPadding { Bottom = 5 }, transition_duration, Easing.OutQuint);
                 }
                 else
                 {
                     flashLayer.FadeOutFromOne(transition_duration, Easing.OutQuint);
                     content.BypassAutoSizeAxes = Axes.Y;
+                    this.TransformTo(nameof(Margin), new MarginPadding(0), transition_duration, Easing.OutQuint);
                 }
             }
 
