@@ -19,6 +19,7 @@ namespace osu.Game.Skinning.Triangles
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.TrianglesPerformancePointsCounter;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.PerformancePointsCounter;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Triangles;
 
         protected override bool IsRollingProportional => true;
 

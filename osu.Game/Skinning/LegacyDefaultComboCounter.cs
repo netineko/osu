@@ -20,6 +20,7 @@ namespace osu.Game.Skinning
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.LegacyDefaultComboCounter;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.ComboCounter;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Legacy;
 
         public Bindable<int> Current { get; } = new BindableInt { MinValue = 0 };
 

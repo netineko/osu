@@ -15,6 +15,7 @@ namespace osu.Game.Screens.Play.HUD
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.DefaultKeyCounterDisplay;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.KeyCounter;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Triangles;
 
         private const double key_fade_time = 80;
 

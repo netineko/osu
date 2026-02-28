@@ -21,6 +21,7 @@ namespace osu.Game.Screens.Play.HUD
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.PlayerAvatar;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.PlayerAvatar;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Other;
 
         [SettingSource(typeof(SkinnableComponentStrings), nameof(SkinnableComponentStrings.CornerRadius), nameof(SkinnableComponentStrings.CornerRadiusDescription),
             SettingControlType = typeof(SettingsPercentageSlider<float>))]

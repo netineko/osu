@@ -13,6 +13,7 @@ namespace osu.Game.Screens.Play.HUD
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.DefaultAccuracyCounter;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.AccuracyCounter;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Triangles;
 
         public bool UsesFixedAnchor { get; set; }
 

@@ -21,6 +21,7 @@ namespace osu.Game.Rulesets.Mania.Skinning.Legacy
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.LegacyManiaComboCounter;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.ComboCounter;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Other;
 
         public bool UsesFixedAnchor { get; set; }
 

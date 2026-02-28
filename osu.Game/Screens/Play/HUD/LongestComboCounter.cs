@@ -19,6 +19,7 @@ namespace osu.Game.Screens.Play.HUD
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.LongestComboCounter;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.LongestComboCounter;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Triangles;
 
         [BackgroundDependencyLoader]
         private void load(OsuColour colours, ScoreProcessor scoreProcessor)

@@ -9,10 +9,13 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
+using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
 using osu.Framework.Localisation;
 using osu.Framework.Logging;
 using osu.Framework.Threading;
+using osu.Game.Graphics;
+using osu.Game.Graphics.Containers;
 using osu.Game.Graphics.Sprites;
 using osu.Game.Graphics.UserInterface;
 using osu.Game.Localisation;
@@ -34,6 +37,10 @@ namespace osu.Game.Overlays.SkinEditor
         private FillFlowContainer fill = null!;
 
         public Bindable<bool> ExpandsOnHover = new Bindable<bool>(true);
+
+        public ToolboxComponentGroup ArgonGroup = null!;
+        public ToolboxComponentGroup TrianglesGroup = null!;
+        public ToolboxComponentGroup LegacyGroup = null!;
 
         /// <summary>
         /// Create a new component toolbox for the specified taget.
@@ -65,6 +72,42 @@ namespace osu.Game.Overlays.SkinEditor
         {
             fill.Clear();
 
+            // we dont want the groups showing in the rulset categories (mostly because theyre so small) so we exclude them here
+            if (ruleset == null)
+            {
+                fill.Add(ArgonGroup = new ToolboxComponentGroup("Argon components"));
+                fill.Add(TrianglesGroup = new ToolboxComponentGroup("Triangles components"));
+                fill.Add(LegacyGroup = new ToolboxComponentGroup("Custom components"));
+
+                fill.Add(new Container { Height = 5 });
+
+                LinkFlowContainer linkFlow;
+                LegacyGroup.Fill.Add(new Container
+                {
+                    RelativeSizeAxes = Axes.X,
+                    AutoSizeAxes = Axes.Y,
+                    CornerRadius = 5,
+                    Masking = true,
+                    Children = new Drawable[]
+                    {
+                        new Box
+                        {
+                            RelativeSizeAxes = Axes.Both,
+                            Colour = Colour4.FromHex("#796718"),
+                        },
+                        linkFlow = new LinkFlowContainer
+                        {
+                            Padding = new MarginPadding(10),
+                            RelativeSizeAxes = Axes.X,
+                            AutoSizeAxes = Axes.Y,
+                        },
+                    }
+                });
+                linkFlow.AddText("These components require textures to be externally added to the skin! See ");
+                linkFlow.AddLink("this wiki page", "https://osu.ppy.sh/wiki/en/Skinning");
+                linkFlow.AddText(" for some of the required files.");
+            }
+
             var skinnableTypes = SerialisedDrawableInfo.GetAllAvailableDrawables(ruleset);
             foreach (var type in skinnableTypes)
                 attemptAddComponent(type);
@@ -88,11 +131,38 @@ namespace osu.Game.Overlays.SkinEditor
                     Logger.Error(e, $"Skin component {type} is missing the SkinComponent base class");
                 }
 
-                fill.Add(new ToolboxComponentButton(instance, target, this, detailedComponent)
+                if (detailedComponent?.Group == ComponentGroup.Argon)
                 {
-                    RequestPlacement = t => RequestPlacement?.Invoke(t),
-                    Expanding = contractOtherButtons,
-                });
+                    ArgonGroup.Fill.Add(new ToolboxComponentButton(instance, target, this, detailedComponent)
+                    {
+                        RequestPlacement = t => RequestPlacement?.Invoke(t),
+                        Expanding = contractOtherButtons,
+                    });
+                }
+                else if (detailedComponent?.Group == ComponentGroup.Triangles)
+                {
+                    TrianglesGroup.Fill.Add(new ToolboxComponentButton(instance, target, this, detailedComponent)
+                    {
+                        RequestPlacement = t => RequestPlacement?.Invoke(t),
+                        Expanding = contractOtherButtons,
+                    });
+                }
+                else if (detailedComponent?.Group == ComponentGroup.Legacy)
+                {
+                    LegacyGroup.Fill.Add(new ToolboxComponentButton(instance, target, this, detailedComponent)
+                    {
+                        RequestPlacement = t => RequestPlacement?.Invoke(t),
+                        Expanding = contractOtherButtons,
+                    });
+                }
+                else
+                {
+                    fill.Add(new ToolboxComponentButton(instance, target, this, detailedComponent)
+                    {
+                        RequestPlacement = t => RequestPlacement?.Invoke(t),
+                        Expanding = contractOtherButtons,
+                    });
+                }
             }
             catch (DependencyNotRegisteredException)
             {
@@ -268,6 +338,165 @@ namespace osu.Game.Overlays.SkinEditor
             {
                 RequestPlacement?.Invoke(component.GetType());
                 return true;
+            }
+        }
+
+        public partial class ToolboxComponentGroup : ClickableContainer
+        {
+            public FillFlowContainer Fill = null!;
+            private Container fillBackground = null!;
+            private Box background = null!;
+            private LocalisableString groupName = @"Unknown group";
+
+            private bool expanded = false;
+
+            public ToolboxComponentGroup(string GroupName)
+            {
+                groupName = GroupName;
+                Action = () => { };
+                RelativeSizeAxes = Axes.X;
+                AutoSizeAxes = Axes.Y;
+            }
+
+            private const double animation_duration = 300;
+
+            [BackgroundDependencyLoader]
+            private void load(OverlayColourProvider colourProvider)
+            {
+                AddRange(new Drawable[]
+                {
+                    fillBackground = new Container
+                    {
+                        Anchor = Anchor.TopCentre,
+                        Origin = Anchor.TopCentre,
+                        RelativeSizeAxes = Axes.X,
+                        CornerRadius = 10,
+                        Y = 40,
+                        Masking = true,
+                        Children = new Drawable[]
+                        {
+                            background = new Box
+                            {
+                                Anchor = Anchor.TopCentre,
+                                Origin = Anchor.TopCentre,
+                                RelativeSizeAxes = Axes.Both,
+                                Colour = colourProvider.Background6,
+                            },
+                            Fill = new FillFlowContainer
+                            {
+                                Anchor = Anchor.TopCentre,
+                                Origin = Anchor.TopCentre,
+                                RelativeSizeAxes = Axes.X,
+                                AutoSizeAxes = Axes.Y,
+                                Scale = new Vector2(1, 1),
+                                Padding = new MarginPadding(5) { Top = 15 },
+                                Spacing = new Vector2(EditorSidebar.PADDING),
+                                Direction = FillDirection.Vertical,
+                            },
+                        }
+                    },
+                    new Button(groupName, colourProvider, expanded, expanding, Fill, fillBackground),
+                });
+            }
+
+            private bool expanding = false;
+
+            private partial class Button : Container
+            {
+                private bool expanded = false;
+                private bool expanding = false;
+                private FillFlowContainer fill = null!;
+                private Container fillBackground = null!;
+                private OverlayColourProvider colourProvider = null!;
+                private Box background = null!;
+                private OsuSpriteText text = null!;
+                private SpriteIcon chevron = null!;
+
+                public Button(LocalisableString groupName, OverlayColourProvider colourProvider, bool expanded, bool expanding, FillFlowContainer fill, Container fillBackground)
+                {
+                    this.expanded = expanded;
+                    this.expanding = expanding;
+                    this.fill = fill;
+                    this.fillBackground = fillBackground;
+                    this.colourProvider = colourProvider;
+
+                    RelativeSizeAxes = Axes.X;
+                    Height = 50;
+                    CornerRadius = 5;
+                    Masking = true;
+                    Children = new Drawable[]
+                    {
+                        background = new Box
+                        {
+                            RelativeSizeAxes = Axes.Both,
+                            Colour = colourProvider.Background3,
+                        },
+                        text = new OsuSpriteText
+                        {
+                            Text = groupName,
+                            Anchor = Anchor.CentreLeft,
+                            Origin = Anchor.CentreLeft,
+                            Margin = new MarginPadding(10),
+                            Font = OsuFont.GetFont(Typeface.Torus, size: 18, weight: FontWeight.SemiBold)
+                        },
+                        chevron = new SpriteIcon
+                        {
+                            Icon = FontAwesome.Solid.ChevronDown,
+                            Anchor = Anchor.CentreRight,
+                            Origin = Anchor.CentreRight,
+                            Size = new Vector2(15),
+                            Margin = new MarginPadding(15)
+                        }
+                    };
+                }
+
+                protected override bool OnHover(HoverEvent e)
+                {
+                    //text.ScaleTo(1.3f, animation_duration, Easing.OutQuint);
+                    text.TransformSpacingTo(new Vector2(0.8f, 0), animation_duration, Easing.OutQuint);
+                    background.FadeColour(colourProvider.Colour3, 200, Easing.OutQuint);
+
+                    return base.OnHover(e);
+                }
+
+                protected override void OnHoverLost(HoverLostEvent e)
+                {
+                    //text.ScaleTo(1.2f, animation_duration, Easing.OutQuint);
+                    text.TransformSpacingTo(new Vector2(0, 0), animation_duration, Easing.OutQuint);
+                    background.FadeColour(colourProvider.Background3, 500, Easing.OutQuint);
+
+                    base.OnHoverLost(e);
+                }
+                protected override bool OnClick(ClickEvent e)
+                {
+                    if (expanded) expanded = false;
+                    else expanded = true;
+
+                    if (expanded)
+                    {
+                        chevron.ScaleTo(new Vector2(1, -1), 300, Easing.OutQuint);
+                        expanding = true;
+                        fill.FadeInFromZero(300, Easing.OutQuint);
+                        fillBackground.ResizeHeightTo(fill.Height, 300, Easing.InOutQuint);
+                        Scheduler.AddDelayed(() => expanding = false, 300);
+                    }
+                    else
+                    {
+                        chevron.ScaleTo(new Vector2(1, 1), 300, Easing.OutQuint);
+                        fill.FadeOutFromOne(300, Easing.OutQuint);
+                        fillBackground.ResizeHeightTo(0f, 300, Easing.OutQuint);
+                    }
+                    return true;
+                }
+
+                protected override void Update()
+                {
+                    if (expanded && !expanding)
+                    {
+                        fillBackground.ResizeHeightTo(fill.Height);
+                    }
+                    base.Update();
+                }
             }
         }
 

@@ -22,6 +22,7 @@ namespace osu.Game.Screens.Play.HUD
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.DefaultHealthDisplay;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.HealthDisplay;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Triangles;
 
         /// <summary>
         /// The base opacity of the glow.

@@ -19,6 +19,7 @@ namespace osu.Game.Screens.Play.HUD
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.ArgonAccuracyCounter;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.AccuracyCounter;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Argon;
 
         protected override double RollingDuration => 250;
 

@@ -27,6 +27,7 @@ namespace osu.Game.Skinning
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.SkinnableSprite;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.SkinnableSprite;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Other;
 
         protected override bool ApplySizeRestrictionsToDefault => true;
 

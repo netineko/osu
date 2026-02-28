@@ -14,6 +14,7 @@ namespace osu.Game.Screens.Play.HUD
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.DefaultScoreCounter;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.ScoreCounter;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Triangles;
 
         public DefaultScoreCounter()
         {

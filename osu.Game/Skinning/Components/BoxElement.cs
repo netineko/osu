@@ -19,6 +19,7 @@ namespace osu.Game.Skinning.Components
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.BoxElement;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.BoxElement;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Other;
 
         public bool UsesFixedAnchor { get; set; }
 

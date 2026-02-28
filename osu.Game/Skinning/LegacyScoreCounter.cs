@@ -14,6 +14,7 @@ namespace osu.Game.Skinning
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.LegacyScoreCounter;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.ScoreCounter;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Legacy;
 
         protected override double RollingDuration => 1000;
         protected override Easing RollingEasing => Easing.Out;

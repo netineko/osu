@@ -23,6 +23,7 @@ namespace osu.Game.Screens.Play.HUD
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.DefaultRankDisplay;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.RankDisplay;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Other;
 
         public bool UsesFixedAnchor { get; set; }
 

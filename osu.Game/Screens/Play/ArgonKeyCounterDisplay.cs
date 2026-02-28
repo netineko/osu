@@ -15,6 +15,7 @@ namespace osu.Game.Screens.Play
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.ArgonKeyCounter;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.KeyCounter;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Argon;
 
         protected override FillFlowContainer<KeyCounter> KeyFlow { get; }
 

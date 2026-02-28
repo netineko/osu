@@ -18,6 +18,7 @@ namespace osu.Game.Skinning.Components
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.TextElement;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.TextElement;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Other;
 
         [SettingSource(typeof(SkinnableComponentStrings), nameof(SkinnableComponentStrings.TextElementText))]
         public Bindable<string> Text { get; } = new Bindable<string>("Circles!");

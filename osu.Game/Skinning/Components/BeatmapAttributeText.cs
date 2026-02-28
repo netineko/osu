@@ -30,6 +30,7 @@ namespace osu.Game.Skinning.Components
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.BeatmapAttributeText;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.BeatmapAttributeText;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Other;
 
         [SettingSource(typeof(BeatmapAttributeTextStrings), nameof(BeatmapAttributeTextStrings.Attribute))]
         public Bindable<BeatmapAttribute> Attribute { get; } = new Bindable<BeatmapAttribute>(BeatmapAttribute.StarRating);

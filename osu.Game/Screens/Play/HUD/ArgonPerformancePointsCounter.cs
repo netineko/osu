@@ -18,6 +18,7 @@ namespace osu.Game.Screens.Play.HUD
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.ArgonPerformancePointsCounter;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.PerformancePointsCounter;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Argon;
 
         private ArgonCounterTextComponent text = null!;
 

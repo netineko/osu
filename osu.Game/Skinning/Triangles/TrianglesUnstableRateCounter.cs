@@ -18,6 +18,7 @@ namespace osu.Game.Skinning.Triangles
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.TrianglesUnstableRateCounter;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.UnstableRateCounter;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Triangles;
 
         private const float alpha_when_invalid = 0.3f;
 

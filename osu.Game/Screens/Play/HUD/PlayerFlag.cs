@@ -19,6 +19,7 @@ namespace osu.Game.Screens.Play.HUD
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.PlayerFlag;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.PlayerFlag;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Other;
 
         protected override bool ReceivePositionalInputAtSubTree(Vector2 screenSpacePos) => false;
 

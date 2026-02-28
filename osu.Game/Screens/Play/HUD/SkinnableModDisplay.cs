@@ -22,6 +22,7 @@ namespace osu.Game.Screens.Play.HUD
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.SkinnableModDisplay;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.ModDisplay;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Other;
 
         private ModDisplay modDisplay = null!;
 

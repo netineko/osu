@@ -22,6 +22,7 @@ namespace osu.Game.Skinning
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.LegacyRankDisplay;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.RankDisplay;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Legacy;
 
         public bool UsesFixedAnchor { get; set; }
 

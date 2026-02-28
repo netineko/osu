@@ -23,6 +23,7 @@ namespace osu.Game.Skinning.Components
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.ArgonJudgementCounter;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.JudgementCounter;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Argon;
 
         [Resolved]
         private JudgementCountController judgementCountController { get; set; } = null!;

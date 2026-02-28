@@ -24,6 +24,7 @@ namespace osu.Game.Skinning
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.LegacyHealthDisplay;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.HealthDisplay;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Legacy;
 
         private const double epic_cutoff = 0.5;
 

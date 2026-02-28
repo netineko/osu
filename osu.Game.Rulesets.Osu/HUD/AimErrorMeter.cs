@@ -36,6 +36,7 @@ namespace osu.Game.Rulesets.Osu.HUD
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.AimErrorMeter;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.AimErrorMeter;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Other;
 
         [SettingSource(typeof(AimErrorMeterStrings), nameof(AimErrorMeterStrings.HitMarkerSize), nameof(AimErrorMeterStrings.HitMarkerSizeDescription))]
         public BindableNumber<float> HitMarkerSize { get; } = new BindableNumber<float>(7f)

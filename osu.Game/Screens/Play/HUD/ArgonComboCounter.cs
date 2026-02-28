@@ -22,6 +22,7 @@ namespace osu.Game.Screens.Play.HUD
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.ArgonComboCounter;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.ComboCounter;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Argon;
 
         protected ArgonCounterTextComponent Text = null!;
 

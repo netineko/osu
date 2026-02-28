@@ -19,5 +19,10 @@ namespace osu.Game.Skinning
         /// The shortened name of this component used in the skin editor.
         /// </summary>
         public LocalisableString ShortName { get; }
+
+        /// <summary>
+        /// The group this component is part of in the skin editor.
+        /// </summary>
+        public ComponentGroup Group { get; }
     }
 }

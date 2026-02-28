@@ -22,6 +22,7 @@ namespace osu.Game.Screens.Play.HUD
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.DefaultSongProgress;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.SongProgressBar;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Triangles;
 
         private const float bottom_bar_height = 5;
         private const float graph_height = SquareGraph.Column.WIDTH * 6;

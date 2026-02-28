@@ -30,6 +30,7 @@ namespace osu.Game.Screens.Play.HUD
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.SpectatorList;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.SpectatorList;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Other;
 
         private const int max_spectators_displayed = 10;
 

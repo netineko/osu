@@ -14,6 +14,7 @@ namespace osu.Game.Skinning
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.LegacyAccuracyCounter;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.AccuracyCounter;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Legacy;
 
         public bool UsesFixedAnchor { get; set; }
 

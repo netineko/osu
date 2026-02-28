@@ -25,6 +25,7 @@ namespace osu.Game.Screens.Play.HUD.HitErrorMeters
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.ColourHitErrorMeter;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.HitErrorMeter;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Other;
 
         private const int animation_duration = 200;
         private const int drawable_judgement_size = 8;

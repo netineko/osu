@@ -20,6 +20,7 @@ namespace osu.Game.Screens.Play.HUD
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.ArgonSongProgress;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.SongProgressBar;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Argon;
 
         private readonly SongProgressInfo info;
         private readonly ArgonSongProgressGraph graph;

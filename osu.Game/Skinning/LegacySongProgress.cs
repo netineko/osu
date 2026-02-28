@@ -17,6 +17,7 @@ namespace osu.Game.Skinning
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.LegacySongProgress;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.SongProgressPie;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Other;
 
         private CircularProgress circularProgress = null!;
 

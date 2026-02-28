@@ -21,6 +21,7 @@ namespace osu.Game.Screens.Play.HUD
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.BPMCounter;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.BPMCounter;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Triangles;
 
         protected override double RollingDuration => 375;
 

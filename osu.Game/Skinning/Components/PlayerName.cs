@@ -20,6 +20,7 @@ namespace osu.Game.Skinning.Components
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.PlayerName;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.PlayerName;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Other;
 
         private readonly OsuSpriteText text;
 

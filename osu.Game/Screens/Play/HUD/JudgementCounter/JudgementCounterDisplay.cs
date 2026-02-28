@@ -21,6 +21,7 @@ namespace osu.Game.Screens.Play.HUD.JudgementCounter
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.JudgementCounterDisplay;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.JudgementCounter;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Triangles;
 
         public const int TRANSFORM_DURATION = 250;
 

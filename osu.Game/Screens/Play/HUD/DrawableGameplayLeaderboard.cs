@@ -24,6 +24,7 @@ namespace osu.Game.Screens.Play.HUD
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.DrawableGameplayLeaderboard;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.Leaderboard;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Other;
 
         protected readonly FillFlowContainer<DrawableGameplayLeaderboardScore> Flow;
 

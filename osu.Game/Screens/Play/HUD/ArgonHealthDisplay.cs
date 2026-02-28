@@ -27,6 +27,7 @@ namespace osu.Game.Screens.Play.HUD
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.ArgonHealthDisplay;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.HealthDisplay;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Argon;
 
         public bool UsesFixedAnchor { get; set; }
 

@@ -19,6 +19,7 @@ namespace osu.Game.Screens.Play.HUD.ClicksPerSecond
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.ClicksPerSecondCounter;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.ClicksPerSecondCounter;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Triangles;
 
         [Resolved]
         private ClicksPerSecondController controller { get; set; } = null!;

@@ -20,6 +20,7 @@ namespace osu.Game.Screens.Play.HUD
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.ArgonWedgePiece;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.ArgonWedgePiece;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Argon;
 
         public bool UsesFixedAnchor { get; set; }
 

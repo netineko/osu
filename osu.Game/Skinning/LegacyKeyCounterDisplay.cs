@@ -19,6 +19,7 @@ namespace osu.Game.Skinning
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.LegacyKeyCounterDisplay;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.KeyCounter;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Legacy;
 
         private static readonly Colour4 active_colour_top = Colour4.FromHex(@"#ffde00");
         private static readonly Colour4 active_colour_bottom = Colour4.FromHex(@"#f8009e");

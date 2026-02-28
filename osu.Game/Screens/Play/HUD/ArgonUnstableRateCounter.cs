@@ -16,6 +16,7 @@ namespace osu.Game.Screens.Play.HUD
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.ArgonUnstableRateCounter;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.UnstableRateCounter;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Argon;
 
         private ArgonCounterTextComponent text = null!;
 

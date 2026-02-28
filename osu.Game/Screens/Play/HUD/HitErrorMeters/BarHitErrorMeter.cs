@@ -31,6 +31,7 @@ namespace osu.Game.Screens.Play.HUD.HitErrorMeters
     {
         LocalisableString IHasSkinDetails.VisualName => SkinComponentNameStrings.BarHitErrorMeter;
         LocalisableString IHasSkinDetails.ShortName => SkinComponentShortnameStrings.HitErrorMeter;
+        ComponentGroup IHasSkinDetails.Group => ComponentGroup.Other;
 
         [SettingSource(typeof(BarHitErrorMeterStrings), nameof(BarHitErrorMeterStrings.JudgementLineThickness), nameof(BarHitErrorMeterStrings.JudgementLineThicknessDescription))]
         public BindableNumber<float> JudgementLineThickness { get; } = new BindableNumber<float>(4)
