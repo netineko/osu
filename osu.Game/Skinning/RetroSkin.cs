@@ -2,11 +2,15 @@
 // See the LICENCE file in the repository root for full licence text.
 
 using System;
+using System.Linq;
 using JetBrains.Annotations;
+using osu.Framework.Graphics;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.IO.Stores;
 using osu.Game.Extensions;
 using osu.Game.IO;
+using osu.Game.Screens.Play.HUD;
+using osu.Game.Screens.Play.HUD.HitErrorMeters;
 using osuTK.Graphics;
 
 namespace osu.Game.Skinning
@@ -58,6 +62,64 @@ namespace osu.Game.Skinning
             Configuration.ConfigDictionary[@"HitCircleOverlap"] = "3";
             Configuration.ConfigDictionary[@"ScoreOverlap"] = "3";
             Configuration.ConfigDictionary[@"ComboOverlap"] = "3";
+        }
+
+        public override Drawable? GetDrawableComponent(ISkinComponentLookup lookup)
+        {
+            switch (lookup)
+            {
+                case GlobalSkinnableContainerLookup containerLookup:
+                    switch (containerLookup.Lookup)
+                    {
+                        case GlobalSkinnableContainers.MainHUDComponents:
+                            return new DefaultSkinComponentsContainer(container =>
+                            {
+                                var score = container.OfType<LegacyScoreCounter>().FirstOrDefault();
+                                var accuracy = container.OfType<GameplayAccuracyCounter>().FirstOrDefault();
+
+                                if (score != null && accuracy != null)
+                                {
+                                    accuracy.Y = container.ToLocalSpace(score.ScreenSpaceDrawQuad.BottomRight).Y;
+                                }
+
+                                var songProgress = container.OfType<LegacySongProgress>().FirstOrDefault();
+
+                                if (songProgress != null && accuracy != null)
+                                {
+                                    songProgress.Anchor = Anchor.TopRight;
+                                    songProgress.Origin = Anchor.CentreRight;
+                                    songProgress.X = -accuracy.ScreenSpaceDeltaToParentSpace(accuracy.ScreenSpaceDrawQuad.Size).X - 18;
+                                    songProgress.Y = container.ToLocalSpace(accuracy.ScreenSpaceDrawQuad.TopLeft).Y + (accuracy.ScreenSpaceDeltaToParentSpace(accuracy.ScreenSpaceDrawQuad.Size).Y / 2);
+                                    songProgress.DotSize.Value = 0;
+                                }
+
+                                var hitError = container.OfType<HitErrorMeter>().FirstOrDefault();
+
+                                if (hitError != null)
+                                {
+                                    hitError.Anchor = Anchor.BottomCentre;
+                                    hitError.Origin = Anchor.CentreLeft;
+                                    hitError.Rotation = -90;
+                                }
+
+                                foreach (var d in container.OfType<ISerialisableDrawable>())
+                                    d.UsesFixedAnchor = true;
+                            })
+                            {
+                                Children = new Drawable[]
+                                {
+                                    new LegacyScoreCounter(),
+                                    new LegacyAccuracyCounter(),
+                                    new LegacySongProgress(),
+                                    new LegacyHealthDisplay(),
+                                    new BarHitErrorMeter(),
+                                }
+                            };
+                    }
+
+                    return null;
+            }
+            return base.GetDrawableComponent(lookup);
         }
 
         public override Texture? GetTexture(string componentName, WrapMode wrapModeS, WrapMode wrapModeT)
