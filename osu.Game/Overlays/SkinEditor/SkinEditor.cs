@@ -66,6 +66,10 @@ namespace osu.Game.Overlays.SkinEditor
         [Resolved]
         private SkinManager skins { get; set; } = null!;
 
+        private SkinComponentToolbox? componentToolbox = null!;
+        private SkinComponentToolbox? rulesetComponentToolbox = null!;
+        private Bindable<bool> expandToolboxComponentsOnHover = new Bindable<bool>(true);
+
         [Resolved]
         private OsuColour colours { get; set; } = null!;
 
@@ -187,6 +191,13 @@ namespace osu.Game.Overlays.SkinEditor
                                                         cloneMenuItem = new EditorMenuItem(CommonStrings.Clone, MenuItemType.Standard, Clone) { Hotkey = new Hotkey(GlobalAction.EditorCloneSelection) },
                                                     }
                                                 },
+                                                new MenuItem(CommonStrings.MenuBarView)
+                                                {
+                                                    Items = new OsuMenuItem[]
+                                                    {
+                                                        new ToggleMenuItem(SkinEditorStrings.ExpandComponentsUponHover, MenuItemType.Standard) { State = { BindTarget = expandToolboxComponentsOnHover } }
+                                                    }
+                                                }
                                             }
                                         },
                                         headerText = new OsuTextFlowContainer
@@ -260,6 +271,15 @@ namespace osu.Game.Overlays.SkinEditor
             }, true);
 
             clipboardContent.BindValueChanged(content => canPaste.Value = !string.IsNullOrEmpty(content.NewValue), true);
+
+            expandToolboxComponentsOnHover.BindValueChanged(value =>
+            {
+                if (componentToolbox != null)
+                    componentToolbox.ExpandsOnHover.Value = value.NewValue;
+
+                if (rulesetComponentToolbox != null)
+                    rulesetComponentToolbox.ExpandsOnHover.Value = value.NewValue;
+            }, true);
 
             Show();
 
@@ -417,17 +437,21 @@ namespace osu.Game.Overlays.SkinEditor
             // If the new target has a ruleset, let's show ruleset-specific items at the top, and the rest below.
             if (target.NewValue.Ruleset != null)
             {
-                componentsSidebar.Add(new SkinComponentToolbox(skinComponentsContainer, target.NewValue.Ruleset)
+                componentsSidebar.Add(rulesetComponentToolbox = new SkinComponentToolbox(skinComponentsContainer, target.NewValue.Ruleset)
                 {
                     RequestPlacement = requestPlacement
                 });
+
+                rulesetComponentToolbox.ExpandsOnHover.Value = expandToolboxComponentsOnHover.Value;
             }
 
             // Remove the ruleset from the lookup to get base components.
-            componentsSidebar.Add(new SkinComponentToolbox(skinComponentsContainer, null)
+            componentsSidebar.Add(componentToolbox = new SkinComponentToolbox(skinComponentsContainer, null)
             {
                 RequestPlacement = requestPlacement
             });
+
+            if (componentToolbox != null) componentToolbox.ExpandsOnHover.Value = expandToolboxComponentsOnHover.Value;
 
             void onComponentsLoaded(Drawable d)
             {

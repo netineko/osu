@@ -94,6 +94,11 @@ namespace osu.Game.Localisation
         /// </summary>
         public static LocalisableString CurrentWorkingLayer => new TranslatableString(getKey(@"current_working_layer"), @"Current working layer");
 
+        /// <summary>
+        /// "Expand components upon hover"
+        /// </summary>
+        public static LocalisableString ExpandComponentsUponHover => new TranslatableString(getKey(@"expand_components_upon_hover"), @"Expand components upon hover");
+
         private static string getKey(string key) => $@"{prefix}:{key}";
     }
 }

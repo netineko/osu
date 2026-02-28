@@ -4,6 +4,7 @@
 using System;
 using System.Linq;
 using osu.Framework.Allocation;
+using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
@@ -31,6 +32,8 @@ namespace osu.Game.Overlays.SkinEditor
         private readonly RulesetInfo? ruleset;
 
         private FillFlowContainer fill = null!;
+
+        public Bindable<bool> ExpandsOnHover = new Bindable<bool>(true);
 
         /// <summary>
         /// Create a new component toolbox for the specified taget.
@@ -85,7 +88,7 @@ namespace osu.Game.Overlays.SkinEditor
                     Logger.Error(e, $"Skin component {type} is missing the SkinComponent base class");
                 }
 
-                fill.Add(new ToolboxComponentButton(instance, target, detailedComponent)
+                fill.Add(new ToolboxComponentButton(instance, target, this, detailedComponent)
                 {
                     RequestPlacement = t => RequestPlacement?.Invoke(t),
                     Expanding = contractOtherButtons,
@@ -121,6 +124,7 @@ namespace osu.Game.Overlays.SkinEditor
             private readonly Drawable component;
             private readonly IHasSkinDetails? detailedComponent;
             private readonly CompositeDrawable? dependencySource;
+            private readonly SkinComponentToolbox toolbox;
 
             private Container innerContainer = null!;
             private Container background = null!;
@@ -132,11 +136,12 @@ namespace osu.Game.Overlays.SkinEditor
             private const float expanded_size = 150;
             private const float text_height = 20;
 
-            public ToolboxComponentButton(Drawable component, CompositeDrawable? dependencySource, IHasSkinDetails? detailedComponent = null)
+            public ToolboxComponentButton(Drawable component, CompositeDrawable? dependencySource, SkinComponentToolbox toolbox, IHasSkinDetails? detailedComponent = null)
             {
                 this.component = component;
                 this.detailedComponent = detailedComponent;
                 this.dependencySource = dependencySource;
+                this.toolbox = toolbox;
 
                 Enabled.Value = true;
 
@@ -148,15 +153,18 @@ namespace osu.Game.Overlays.SkinEditor
 
             protected override bool OnHover(HoverEvent e)
             {
-                expandContractAction?.Cancel();
-                expandContractAction = Scheduler.AddDelayed(() =>
+                if (toolbox.ExpandsOnHover.Value)
                 {
-                    this.ResizeHeightTo(expanded_size, animation_duration, Easing.OutQuint);
-                    background.ResizeHeightTo(expanded_size - text_height * 1.5f, animation_duration, Easing.OutQuint);
-                    text.ScaleTo(1.1f, animation_duration, Easing.OutQuint);
-                    text.TransformTo(nameof(Margin), new MarginPadding(6), animation_duration, Easing.OutQuint);
-                    Expanding?.Invoke(this);
-                }, 100);
+                    expandContractAction?.Cancel();
+                    expandContractAction = Scheduler.AddDelayed(() =>
+                    {
+                        this.ResizeHeightTo(expanded_size, animation_duration, Easing.OutQuint);
+                        background.ResizeHeightTo(expanded_size - text_height * 1.5f, animation_duration, Easing.OutQuint);
+                        text.ScaleTo(1.1f, animation_duration, Easing.OutQuint);
+                        text.TransformTo(nameof(Margin), new MarginPadding(6), animation_duration, Easing.OutQuint);
+                        Expanding?.Invoke(this);
+                    }, 100);
+                }
 
                 return base.OnHover(e);
             }
@@ -165,10 +173,13 @@ namespace osu.Game.Overlays.SkinEditor
             {
                 base.OnHoverLost(e);
 
-                expandContractAction?.Cancel();
-                // If no other component is selected for too long, force a contract.
-                // Otherwise we will generally contract when Contract() is called from outside.
-                expandContractAction = Scheduler.AddDelayed(Contract, 200);
+                if (toolbox.ExpandsOnHover.Value)
+                {
+                    expandContractAction?.Cancel();
+                    // If no other component is selected for too long, force a contract.
+                    // Otherwise we will generally contract when Contract() is called from outside.
+                    expandContractAction = Scheduler.AddDelayed(Contract, 200);
+                }
             }
 
             public void Contract()
