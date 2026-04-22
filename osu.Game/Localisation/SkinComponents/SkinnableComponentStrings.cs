@@ -35,14 +35,44 @@ namespace osu.Game.Localisation.SkinComponents
         public static LocalisableString CornerRadiusDescription => new TranslatableString(getKey(@"corner_radius_description"), @"How rounded the corners should be.");
 
         /// <summary>
+        /// "Shear Amount"
+        /// </summary>
+        public static LocalisableString ShearAmount => new TranslatableString(getKey(@"shear_amount"), @"Shear Amount");
+
+        /// <summary>
         /// "Show label"
         /// </summary>
         public static LocalisableString ShowLabel => new TranslatableString(getKey(@"show_label"), @"Show label");
 
         /// <summary>
+        /// "Opacity"
+        /// </summary>
+        public static LocalisableString Opacity => new TranslatableString(getKey(@"opacity"), @"Opacity");
+
+        /// <summary>
+        /// "Opacity 1"
+        /// </summary>
+        public static LocalisableString Opacity1 => new TranslatableString(getKey(@"opacity_1"), @"Opacity 1");
+
+        /// <summary>
+        /// "Opacity 2"
+        /// </summary>
+        public static LocalisableString Opacity2 => new TranslatableString(getKey(@"opacity_2"), @"Opacity 2");
+
+        /// <summary>
         /// "Colour"
         /// </summary>
         public static LocalisableString Colour => new TranslatableString(getKey(@"colour"), @"Colour");
+
+        /// <summary>
+        /// "Colour 1"
+        /// </summary>
+        public static LocalisableString Colour1 => new TranslatableString(getKey(@"colour_1"), @"Colour 1");
+
+        /// <summary>
+        /// "Colour 2"
+        /// </summary>
+        public static LocalisableString Colour2 => new TranslatableString(getKey(@"colour_2"), @"Colour 2");
 
         /// <summary>
         /// "Text colour"

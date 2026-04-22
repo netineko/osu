@@ -4,6 +4,7 @@
 using System;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Game.Configuration;
@@ -27,8 +28,36 @@ namespace osu.Game.Skinning.Components
             Precision = 0.01f
         };
 
-        [SettingSource(typeof(SkinnableComponentStrings), nameof(SkinnableComponentStrings.Colour))]
-        public BindableColour4 AccentColour { get; } = new BindableColour4(Colour4.White);
+        [SettingSource(typeof(SkinnableComponentStrings), nameof(SkinnableComponentStrings.ShearAmount),
+            SettingControlType = typeof(SettingsPercentageSlider<float>))]
+        public BindableFloat ShearAmount { get; } = new BindableFloat(0)
+        {
+            MinValue = 0,
+            MaxValue = 0.5f,
+            Precision = 0.01f
+        };
+
+        [SettingSource(typeof(SkinnableComponentStrings), nameof(SkinnableComponentStrings.Colour1))]
+        public BindableColour4 Colour1 { get; } = new BindableColour4(Colour4.White);
+
+        [SettingSource(typeof(SkinnableComponentStrings), nameof(SkinnableComponentStrings.Opacity1))]
+        public BindableFloat Opacity1 { get; } = new BindableFloat(1)
+        {
+            MinValue = 0,
+            MaxValue = 1,
+            Precision = 0.01f
+        };
+
+        [SettingSource(typeof(SkinnableComponentStrings), nameof(SkinnableComponentStrings.Colour2))]
+        public BindableColour4 Colour2 { get; } = new BindableColour4(Colour4.White);
+
+        [SettingSource(typeof(SkinnableComponentStrings), nameof(SkinnableComponentStrings.Opacity2))]
+        public BindableFloat Opacity2 { get; } = new BindableFloat(1)
+        {
+            MinValue = 0,
+            MaxValue = 1,
+            Precision = 0.01f
+        };
 
         public BoxElement()
         {
@@ -50,7 +79,12 @@ namespace osu.Game.Skinning.Components
         {
             base.LoadComplete();
 
-            AccentColour.BindValueChanged(_ => Colour = AccentColour.Value, true);
+            Colour1.BindValueChanged(_ => Colour = ColourInfo.GradientHorizontal(Colour1.Value.Opacity(Opacity1.Value), Colour2.Value.Opacity(Opacity2.Value)), true);
+            Colour2.BindValueChanged(_ => Colour = ColourInfo.GradientHorizontal(Colour1.Value.Opacity(Opacity1.Value), Colour2.Value.Opacity(Opacity2.Value)), true);
+            Opacity1.BindValueChanged(_ => Colour = ColourInfo.GradientHorizontal(Colour1.Value.Opacity(Opacity1.Value), Colour2.Value.Opacity(Opacity2.Value)), true);
+            Opacity2.BindValueChanged(_ => Colour = ColourInfo.GradientHorizontal(Colour1.Value.Opacity(Opacity1.Value), Colour2.Value.Opacity(Opacity2.Value)), true);
+
+            ShearAmount.BindValueChanged(_ => Shear = new Vector2(ShearAmount.Value, 0));
         }
 
         protected override void Update()
