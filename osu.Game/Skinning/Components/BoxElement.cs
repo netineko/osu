@@ -84,7 +84,7 @@ namespace osu.Game.Skinning.Components
             Opacity1.BindValueChanged(_ => Colour = ColourInfo.GradientHorizontal(Colour1.Value.Opacity(Opacity1.Value), Colour2.Value.Opacity(Opacity2.Value)), true);
             Opacity2.BindValueChanged(_ => Colour = ColourInfo.GradientHorizontal(Colour1.Value.Opacity(Opacity1.Value), Colour2.Value.Opacity(Opacity2.Value)), true);
 
-            ShearAmount.BindValueChanged(_ => Shear = new Vector2(ShearAmount.Value, 0));
+            ShearAmount.BindValueChanged(_ => Shear = new Vector2(ShearAmount.Value, 0), true);
         }
 
         protected override void Update()
