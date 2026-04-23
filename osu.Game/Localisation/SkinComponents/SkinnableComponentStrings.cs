@@ -35,9 +35,9 @@ namespace osu.Game.Localisation.SkinComponents
         public static LocalisableString CornerRadiusDescription => new TranslatableString(getKey(@"corner_radius_description"), @"How rounded the corners should be.");
 
         /// <summary>
-        /// "Shear Amount"
+        /// "Shear"
         /// </summary>
-        public static LocalisableString ShearAmount => new TranslatableString(getKey(@"shear_amount"), @"Shear Amount");
+        public static LocalisableString Shear => new TranslatableString(getKey(@"shear"), @"Shear");
 
         /// <summary>
         /// "Show label"

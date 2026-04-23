@@ -28,14 +28,8 @@ namespace osu.Game.Skinning.Components
             Precision = 0.01f
         };
 
-        [SettingSource(typeof(SkinnableComponentStrings), nameof(SkinnableComponentStrings.ShearAmount),
-            SettingControlType = typeof(SettingsPercentageSlider<float>))]
-        public BindableFloat ShearAmount { get; } = new BindableFloat(0)
-        {
-            MinValue = 0,
-            MaxValue = 0.5f,
-            Precision = 0.01f
-        };
+        [SettingSource(typeof(SkinnableComponentStrings), nameof(SkinnableComponentStrings.Shear))]
+        public BindableBool Sheared { get; } = new BindableBool(false);
 
         [SettingSource(typeof(SkinnableComponentStrings), nameof(SkinnableComponentStrings.Colour1))]
         public BindableColour4 Colour1 { get; } = new BindableColour4(Colour4.White);
@@ -84,7 +78,7 @@ namespace osu.Game.Skinning.Components
             Opacity1.BindValueChanged(_ => Colour = ColourInfo.GradientHorizontal(Colour1.Value.Opacity(Opacity1.Value), Colour2.Value.Opacity(Opacity2.Value)), true);
             Opacity2.BindValueChanged(_ => Colour = ColourInfo.GradientHorizontal(Colour1.Value.Opacity(Opacity1.Value), Colour2.Value.Opacity(Opacity2.Value)), true);
 
-            ShearAmount.BindValueChanged(_ => Shear = new Vector2(ShearAmount.Value, 0), true);
+            Sheared.BindValueChanged(s => Shear = s.NewValue ? OsuGame.SHEAR : Vector2.Zero, true);
         }
 
         protected override void Update()
