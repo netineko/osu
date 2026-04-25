@@ -8,6 +8,7 @@ using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Game.Configuration;
+using osu.Game.Graphics;
 using osu.Game.Localisation.SkinComponents;
 using osu.Game.Overlays.Settings;
 using osuTK;
@@ -15,7 +16,7 @@ using osuTK.Graphics;
 
 namespace osu.Game.Skinning.Components
 {
-    public partial class BoxElement : CompositeDrawable, ISerialisableDrawable
+    public partial class GradientBoxElement : CompositeDrawable, ISerialisableDrawable
     {
         public bool UsesFixedAnchor { get; set; }
 
@@ -31,19 +32,31 @@ namespace osu.Game.Skinning.Components
         [SettingSource(typeof(SkinnableComponentStrings), nameof(SkinnableComponentStrings.Shear))]
         public BindableBool Sheared { get; } = new BindableBool(false);
 
-        [SettingSource(typeof(SkinnableComponentStrings), nameof(SkinnableComponentStrings.Colour))]
-        public BindableColour4 AccentColour { get; } = new BindableColour4(Colour4.White);
+        [SettingSource(typeof(SkinnableComponentStrings), nameof(SkinnableComponentStrings.Colour1))]
+        public BindableColour4 Colour1 { get; } = new BindableColour4(Colour4.White);
 
-        [SettingSource(typeof(SkinnableComponentStrings), nameof(SkinnableComponentStrings.Opacity),
+        [SettingSource(typeof(SkinnableComponentStrings), nameof(SkinnableComponentStrings.Opacity1),
             SettingControlType = typeof(SettingsPercentageSlider<float>))]
-        public BindableFloat Opacity { get; } = new BindableFloat(1)
+        public BindableFloat Opacity1 { get; } = new BindableFloat(1)
         {
             MinValue = 0,
             MaxValue = 1,
             Precision = 0.01f
         };
 
-        public BoxElement()
+        [SettingSource(typeof(SkinnableComponentStrings), nameof(SkinnableComponentStrings.Colour2))]
+        public BindableColour4 Colour2 { get; } = new BindableColour4(Colour4.Red);
+
+        [SettingSource(typeof(SkinnableComponentStrings), nameof(SkinnableComponentStrings.Opacity2),
+            SettingControlType = typeof(SettingsPercentageSlider<float>))]
+        public BindableFloat Opacity2 { get; } = new BindableFloat(1)
+        {
+            MinValue = 0,
+            MaxValue = 1,
+            Precision = 0.01f
+        };
+
+        public GradientBoxElement()
         {
             Size = new Vector2(400, 80);
 
@@ -63,8 +76,10 @@ namespace osu.Game.Skinning.Components
         {
             base.LoadComplete();
 
-            AccentColour.BindValueChanged(_ => Colour = AccentColour.Value.Opacity(Opacity.Value), true);
-            Opacity.BindValueChanged(_ => Colour = AccentColour.Value.Opacity(Opacity.Value), true);
+            Colour1.BindValueChanged(_ => Colour = ColourInfo.GradientHorizontal(Colour1.Value.Opacity(Opacity1.Value), Colour2.Value.Opacity(Opacity2.Value)), true);
+            Colour2.BindValueChanged(_ => Colour = ColourInfo.GradientHorizontal(Colour1.Value.Opacity(Opacity1.Value), Colour2.Value.Opacity(Opacity2.Value)), true);
+            Opacity1.BindValueChanged(_ => Colour = ColourInfo.GradientHorizontal(Colour1.Value.Opacity(Opacity1.Value), Colour2.Value.Opacity(Opacity2.Value)), true);
+            Opacity2.BindValueChanged(_ => Colour = ColourInfo.GradientHorizontal(Colour1.Value.Opacity(Opacity1.Value), Colour2.Value.Opacity(Opacity2.Value)), true);
 
             Sheared.BindValueChanged(s => Shear = s.NewValue ? OsuGame.SHEAR : Vector2.Zero, true);
         }
