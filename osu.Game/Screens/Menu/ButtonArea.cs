@@ -23,7 +23,7 @@ namespace osu.Game.Screens.Menu
         private readonly ButtonAreaBackground buttonAreaBackground;
         private Visibility state;
 
-        public const float BUTTON_AREA_HEIGHT = 100;
+        public const float BUTTON_AREA_HEIGHT = 150;
 
         public ButtonArea()
         {
@@ -56,14 +56,12 @@ namespace osu.Game.Screens.Menu
             {
                 switch (value)
                 {
-                    case ButtonSystemState.Exit:
                     case ButtonSystemState.Initial:
                     case ButtonSystemState.EnteringMode:
                         Hide();
                         break;
 
                     case ButtonSystemState.TopLevel:
-                    case ButtonSystemState.Play:
                         Show();
                         break;
                 }
@@ -140,7 +138,6 @@ namespace osu.Game.Screens.Menu
                             break;
 
                         case ButtonSystemState.Initial:
-                        case ButtonSystemState.Exit:
                         case ButtonSystemState.EnteringMode:
                             State = ButtonAreaBackgroundState.Flat;
                             break;

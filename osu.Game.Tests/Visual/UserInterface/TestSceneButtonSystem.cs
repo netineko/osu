@@ -53,7 +53,7 @@ namespace osu.Game.Tests.Visual.UserInterface
 
             AddStep("Return to menu", () =>
             {
-                buttons.State = ButtonSystemState.Play;
+                buttons.State = ButtonSystemState.TopLevel;
                 buttons.FadeIn(MainMenu.FADE_IN_DURATION, Easing.OutQuint);
                 buttons.MoveTo(new Vector2(0), MainMenu.FADE_IN_DURATION, Easing.OutQuint);
                 logo.FadeColour(Color4.White, 100, Easing.OutQuint);
@@ -67,15 +67,10 @@ namespace osu.Game.Tests.Visual.UserInterface
             AddStep("Enter mode", performEnterMode);
         }
 
-        [TestCase(Key.P, Key.P)]
-        [TestCase(Key.M, Key.M, Key.L)]
-        [TestCase(Key.M, Key.M, Key.M)]
-        [TestCase(Key.L, Key.L)]
-        [TestCase(Key.B, Key.E, Key.B)]
-        [TestCase(Key.S, Key.E, Key.S)]
-        [TestCase(Key.D)]
-        [TestCase(Key.Q)]
-        [TestCase(Key.O)]
+        [TestCase(Key.P)]
+        [TestCase(Key.M)]
+        [TestCase(Key.R)]
+        [TestCase(Key.E)]
         public void TestShortcutKeys(params Key[] keys)
         {
             int activationCount = -1;
@@ -91,31 +86,15 @@ namespace osu.Game.Tests.Visual.UserInterface
                         break;
 
                     case Key.M:
-                        buttons.OnMultiplayer = action;
+                        buttons.OnRankedPlay = action;
                         break;
 
-                    case Key.L:
-                        buttons.OnPlaylists = action;
+                    case Key.R:
+                        buttons.OnRankedPlay = action;
                         break;
 
-                    case Key.B:
+                    case Key.E:
                         buttons.OnEditBeatmap = action;
-                        break;
-
-                    case Key.S:
-                        buttons.OnEditSkin = action;
-                        break;
-
-                    case Key.D:
-                        buttons.OnBeatmapListing = action;
-                        break;
-
-                    case Key.Q:
-                        buttons.OnExit = _ => action();
-                        break;
-
-                    case Key.O:
-                        buttons.OnSettings = action;
                         break;
                 }
             });
