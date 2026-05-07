@@ -239,7 +239,23 @@ namespace osu.Game.Configuration
             SetDefault(OsuSetting.DashboardSortMode, UserSortCriteria.LastVisit);
             SetDefault(OsuSetting.DashboardDisplayStyle, OverlayPanelDisplayStyle.Card);
 
-            SetDefault(OsuSetting.ArcadeServiceMode, false);
+            SetDefault(OsuSetting.ArcadeServiceMode, false);                // games equivalent of elevated privaleges
+            SetDefault(OsuSetting.ArcadeShowGlobalLeaderboards, false);     // show global leaderboards (disabled by OsuSetting.ArcadeAllowOnlineServices)
+            SetDefault(OsuSetting.ArcadeShowCountryLeaderboards, false);    // show country leaderboards (disabled by OsuSetting.ArcadeAllowOnlineServices)
+            SetDefault(OsuSetting.ArcadeAllowTaiko, true);                  // show/hide osu!taiko
+            SetDefault(OsuSetting.ArcadeAllowCTB, true);                    // show/hide osu!catch
+            SetDefault(OsuSetting.ArcadeAllowMania, true);                  // show/hide osu!mania
+            SetDefault(OsuSetting.ArcadeShowSupporterFeatures, true);       // show supporter upsell if enabled, completely remove user-based supporter required features otherwise. owner customization is still availiable
+            SetDefault(OsuSetting.ArcadeAllowChat, false);                  // allow chatting with other local players in matches
+            SetDefault(OsuSetting.ArcadeAllowMulti, true);                  // local multiplayer
+            SetDefault(OsuSetting.ArcadeAllowSolo, true);                   // solo gameplay
+            SetDefault(OsuSetting.ArcadeAllowOnlineServices, false);        // completely hide all online required features
+            SetDefault(OsuSetting.ArcadeAllowTyping, true);                 // allow typing into text boxes (most text boxes will be hidden otherwise)
+            SetDefault(OsuSetting.ArcadeShowDigitalKeyboard, false);        // show a built-in touch based keyboard (disabled by OsuSetting.ArcadeAllowTyping)
+            SetDefault(OsuSetting.ArcadeForceLicensedTracks, false);        // exclusively allow officially licensed tracks marked as featured artist
+            SetDefault(OsuSetting.ArcadeForceSafeTracks, false);            // hide all explicit tracks
+            SetDefault(OsuSetting.ArcadeFreePlay, false);                   // make the game free to play without credits
+            SetDefault(OsuSetting.ArcadeTimedPlay, false);                  // enable countdown timers in screens to reduce idle time
         }
 
         protected override bool CheckLookupContainsPrivateInformation(OsuSetting lookup)
@@ -504,5 +520,21 @@ namespace osu.Game.Configuration
         DashboardDisplayStyle,
 
         ArcadeServiceMode,
+        ArcadeShowGlobalLeaderboards,
+        ArcadeShowCountryLeaderboards,
+        ArcadeAllowTaiko,
+        ArcadeAllowCTB,
+        ArcadeAllowMania,
+        ArcadeShowSupporterFeatures,
+        ArcadeAllowChat,
+        ArcadeAllowMulti,
+        ArcadeAllowSolo,
+        ArcadeAllowOnlineServices,
+        ArcadeAllowTyping,
+        ArcadeShowDigitalKeyboard,
+        ArcadeForceLicensedTracks,
+        ArcadeForceSafeTracks,
+        ArcadeFreePlay,
+        ArcadeTimedPlay,
     }
 }
