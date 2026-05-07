@@ -238,6 +238,8 @@ namespace osu.Game.Configuration
 
             SetDefault(OsuSetting.DashboardSortMode, UserSortCriteria.LastVisit);
             SetDefault(OsuSetting.DashboardDisplayStyle, OverlayPanelDisplayStyle.Card);
+
+            SetDefault(OsuSetting.ArcadeServiceMode, false);
         }
 
         protected override bool CheckLookupContainsPrivateInformation(OsuSetting lookup)
@@ -335,6 +337,13 @@ namespace osu.Game.Configuration
                         name: GraphicsSettingsStrings.UIScaling,
                         value: $"{scale:N2}x"
                         // TODO: implement lookup for framework platform key bindings
+                    )
+                ),
+                new TrackedSetting<bool>(OsuSetting.ArcadeServiceMode, state => new SettingDescription(
+                        rawValue: state,
+                        name: ArcadeStrings.ServiceMode,
+                        value: state ? CommonStrings.Enabled.ToLower() : CommonStrings.Disabled.ToLower(),
+                        shortcut: @"don't forget to turn this off!"
                     )
                 ),
             };
@@ -493,5 +502,7 @@ namespace osu.Game.Configuration
 
         DashboardSortMode,
         DashboardDisplayStyle,
+
+        ArcadeServiceMode,
     }
 }

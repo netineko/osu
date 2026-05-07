@@ -3,7 +3,6 @@
 
 #nullable disable
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using osu.Framework.Allocation;
@@ -33,7 +32,6 @@ namespace osu.Game.Overlays
         {
             var sections = new List<SettingsSection>
             {
-                // This list should be kept in sync with ScreenBehaviour.
                 new GeneralSection(),
                 new SkinSection(),
                 new InputSection(createSubPanel(new KeyBindingPanel())),
@@ -44,12 +42,9 @@ namespace osu.Game.Overlays
                 new GraphicsSection(),
                 new OnlineSection(),
                 new MaintenanceSection(),
-                new DebugSection()
+                new DebugSection(),
+                new ArcadeSection()
             };
-
-            var today = DateTimeOffset.Now;
-            if (today.Month == 4 && today.Day == 1)
-                sections.Insert(9, new AfToggleSection());
 
             return sections;
         }

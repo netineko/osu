@@ -17,6 +17,7 @@ using osu.Framework.Input.Events;
 using osu.Framework.Logging;
 using osu.Framework.Platform;
 using osu.Framework.Threading;
+using osu.Game.Configuration;
 using osu.Game.Graphics;
 using osu.Game.Graphics.Containers;
 using osu.Game.Input;
@@ -69,8 +70,9 @@ namespace osu.Game.Screens.Menu
 
         private readonly ButtonArea buttonArea;
 
-        private MainMenuButton soloButton;
-        private MainMenuButton multiButton;
+        private MainMenuButton soloButton = null!;
+        private MainMenuButton multiButton = null!;
+        private MainMenuButton editButton = null!;
 
         private Sample? sampleBackToLogo;
         private Sample? sampleLogoSwoosh;
@@ -78,6 +80,11 @@ namespace osu.Game.Screens.Menu
         private readonly LogoTrackingContainer logoTrackingContainer;
 
         public bool ReturnToTopOnIdle { get; set; } = true;
+
+        [Resolved]
+        private OsuConfigManager config { get; set; } = null!;
+
+        private Bindable<bool> serviceMode = null!;
 
         public ButtonSystem()
         {
@@ -88,22 +95,6 @@ namespace osu.Game.Screens.Menu
                 RelativeSizeAxes = Axes.Both,
                 Child = buttonArea = new ButtonArea()
             };
-
-            buttonArea.AddRange(new Drawable[]
-            {
-                soloButton = new MainMenuButton(ButtonSystemStrings.Solo, @"button-default-select", OsuIcon.Play, new Color4(102, 68, 204, 255), (_, _) => OnSolo?.Invoke(), Key.P)
-                {
-                    Padding = new MarginPadding { Right = WEDGE_WIDTH },
-                },
-                logoTrackingContainer.LogoFacade.With(d => d.Scale = new Vector2(0.74f)),
-                multiButton = new MainMenuButton(ButtonSystemStrings.Multi, @"button-daily-select", OsuIcon.PlayerFollow, new Color4(102, 68, 204, 255), onRankedPlay, Key.R, Key.M)
-                {
-                    Padding = new MarginPadding { Left = WEDGE_WIDTH },
-                },
-            });
-            buttonArea.Add(new MainMenuButton(EditorStrings.BeatmapEditor.ToLower(), @"button-default-select", OsuIcon.EditCircle, new Color4(238, 170, 0, 255), (_, _) => OnEditBeatmap?.Invoke(), Key.E));
-
-            buttonArea.Flow.CentreTarget = logoTrackingContainer.LogoFacade;
         }
 
         [Resolved]
@@ -131,8 +122,55 @@ namespace osu.Game.Screens.Menu
 
             if (idleTracker != null) isIdle.BindTo(idleTracker.IsIdle);
 
+
+
             sampleBackToLogo = audio.Samples.Get(@"Menu/back-to-logo");
             sampleLogoSwoosh = audio.Samples.Get(@"Menu/osu-logo-swoosh");
+
+            buttonArea.AddRange(new Drawable[]
+            {
+                soloButton = new MainMenuButton(ButtonSystemStrings.Solo, @"button-default-select", OsuIcon.Play, new Color4(102, 68, 204, 255), (_, _) => OnSolo?.Invoke(), Key.P)
+                {
+                    Padding = new MarginPadding { Right = WEDGE_WIDTH },
+                    Anchor = Anchor.CentreLeft,
+                    Origin = Anchor.CentreLeft,
+                },
+                logoTrackingContainer.LogoFacade.With(d => d.Scale = new Vector2(0.74f)),
+                multiButton = new MainMenuButton(ButtonSystemStrings.Multi, @"button-daily-select", OsuIcon.PlayerFollow, new Color4(102, 68, 204, 255), onRankedPlay, Key.R, Key.M)
+                {
+                    Padding = new MarginPadding { Left = WEDGE_WIDTH },
+                    Anchor = Anchor.CentreLeft,
+                    Origin = Anchor.CentreLeft,
+                },
+            });
+
+            serviceMode = config.GetBindable<bool>(OsuSetting.ArcadeServiceMode);
+            serviceMode.BindValueChanged(_ => serviceToggle(serviceMode.Value), true);
+
+            buttonArea.Flow.CentreTarget = logoTrackingContainer.LogoFacade;
+        }
+
+        private void serviceToggle(bool enabled)
+        {
+            if (enabled)
+            {
+                State = ButtonSystemState.Initial;
+                buttonArea.Add(editButton = new MainMenuButton(EditorStrings.BeatmapEditor.ToLower(), @"button-default-select", OsuIcon.EditCircle, new Color4(238, 170, 0, 255), (_, _) => OnEditBeatmap?.Invoke(), Key.E)
+                {
+                    Anchor = Anchor.CentreLeft,
+                    Origin = Anchor.CentreLeft,
+                });
+                Scheduler.AddDelayed(() => State = ButtonSystemState.TopLevel, 100);
+            }
+            else
+            {
+                State = ButtonSystemState.Initial;
+                Scheduler.AddDelayed(() =>
+                {
+                    editButton?.RemoveAndDisposeImmediately();
+                    State = ButtonSystemState.TopLevel;
+                }, 100);
+            }
         }
 
         private void onRankedPlay(MainMenuButton mainMenuButton, UIEvent uiEvent)
