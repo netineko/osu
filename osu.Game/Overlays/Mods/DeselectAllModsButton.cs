@@ -4,9 +4,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using osu.Framework.Bindables;
+using osu.Framework.Graphics;
 using osu.Game.Graphics.UserInterface;
 using osu.Game.Localisation;
 using osu.Game.Rulesets.Mods;
+using osuTK;
 
 namespace osu.Game.Overlays.Mods
 {
@@ -14,6 +16,16 @@ namespace osu.Game.Overlays.Mods
     {
         private readonly Bindable<IReadOnlyList<Mod>> selectedMods = new Bindable<IReadOnlyList<Mod>>();
 
+        public sealed override bool ReceivePositionalInputAt(Vector2 screenSpacePos)
+        {
+            // Ensure clicks in the bottom of the screen still trigger the deselect button.
+            var inputRectangle = DrawRectangle.Inflate(new MarginPadding
+            {
+                Bottom = OsuGame.SCREEN_EDGE_MARGIN,
+            });
+
+            return inputRectangle.Contains(ToLocalSpace(screenSpacePos));
+        }
         public DeselectAllModsButton(ModSelectOverlay modSelectOverlay)
         {
             Width = ModSelectOverlay.BUTTON_WIDTH;
